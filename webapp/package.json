@@ -1,0 +1,23 @@
+{
+  "name": "benzpay",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Lukeas14/benzpay.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lukeas14/benzpay/issues"
+  },
+  "homepage": "https://github.com/Lukeas14/benzpay",
+  "dependencies": {
+    "express": "^4.12.4"
+  }
+}
