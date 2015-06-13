@@ -10,13 +10,10 @@ var gulp = require('gulp'),
 		],
 		lessFiles: './style.less',
 		jsFiles: [
-			'./bower_components/lodash/lodash.js',
-			'./bower_components/jquery/dist/jquery.js',
-			'./bower_components/classnames/index.js',
-			'./bower_components/moment/moment.js',
-			'./bower_components/react/react.js',
-			'./public/build/react/components/**/*.js',
-			'./public/build/react/dashboard.js'
+			'./node_modules/angular/angular.js',
+			'./node_modules/angular-route/angular-route.js',
+			'./node_modules/moment/moment.js',
+			'./js/app.js'
 		]
 	};
 
@@ -27,16 +24,16 @@ gulp.task('css', function(){
 		}))
 		.pipe(gulp.dest(config.buildDir));
 });
-/*
+
 gulp.task('js', function(){
 	return gulp.src(config.jsFiles)
 		.pipe(concat('script.js'))
 		.pipe(gulp.dest(config.buildDir))
 });
-*/
+
 gulp.task('watch', function(){
-	//gulp.watch(config.jsFiles, ['js']);
+	gulp.watch(config.jsFiles, ['js']);
 	gulp.watch(config.lessFiles, ['css']);
 });
 
-gulp.task('default', ['css']);//, 'js', 'watch']);
+gulp.task('default', ['css', 'js', 'watch']);//, 'js', 'watch']);
