@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="104px" height="63px" viewBox="0 0 104 63" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>ON alt</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Payment-Settings-Disbabled" sketch:type="MSArtboardGroup" transform="translate(-616.000000, -338.000000)">
+            <g id="Option-text-+-Buttons-+-Off" sketch:type="MSLayerGroup" transform="translate(-167.000000, 235.000000)">
+                <g id="Option-text-+-Buttons" sketch:type="MSShapeGroup">
+                    <g id="ON-alt" transform="translate(783.000000, 104.000000)">
+                        <path d="M10,0 L94,0 C99.523,0 104,4.477 104,10 L104,52 C104,57.523 99.523,62 94,62 L10,62 C4.477,62 0,57.523 0,52 L0,10 C0,4.477 4.477,0 10,0 L10,0 Z" id="Bg" fill="#22C064"></path>
+                        <path d="M52,1 L93,1 C97.418,1 101,4.582 101,9 L101,49 C101,53.418 97.418,57 93,57 L52,57 C47.582,57 44,53.418 44,49 L44,9 C44,4.582 47.582,1 52,1 L52,1 Z" id="Switch" fill="#FFFFFF" filter="url(#filter-1)"></path>
+                        <path d="M67.9990442,36.8770442 L86.692,18.185 L88.813,20.307 L68.307,40.812 L67.9988548,40.504 L67.691,40.812 L57.185,30.306 L59.306,28.184 L67.9990442,36.8770442 Z" id="Check" fill="#000000"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

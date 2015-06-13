@@ -1,3 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="28" height="29" viewBox="0 0 28 29">
-  <image xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAdCAMAAACOj/wDAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAilBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8AAAD2iU6fAAAALHRSTlMABBAGYfb7fOH58BYggIfr9QEwQJyU+u2gliHF4Nrz5+jx+HFqaPdtX3kFAwrhTP8AAAABYktHRACIBR1IAAAACXBIWXMAAAsSAAALEgHS3X78AAAAkElEQVQoz83Sxw7CQBADUGdJgBRaQgm9t7D//32MEYgLjsQtI61szbvsYYDfEzjXEoQw8r7dEdj1NrHAhOgbj2mWpQp73PUFDrgbCvwsm42jvChyhWP2icAp+0zgqyf/YVnOFxLtLetwVYdrYMO+BXbM/ftuD4ZRCBxj6yfgfLG8Aje7+PgO5wJ+t/pmxXwwn9ySM3vKkVG+AAAAAElFTkSuQmCC" width="28" height="29"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="30px" height="29px" viewBox="0 0 30 29" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>Chart</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Payment-History" sketch:type="MSArtboardGroup" transform="translate(-177.000000, -705.000000)" fill="#FFFFFF">
+            <g id="Tap-bar" sketch:type="MSLayerGroup" transform="translate(-1.000000, 668.000000)">
+                <g id="Tap-Bar-1-Copy" sketch:type="MSShapeGroup">
+                    <g id="Icons" transform="translate(50.000000, 33.000000)">
+                        <path d="M156.295,4.992 L153.824,4.992 C152.91,4.992 152.165,5.713 152.119,6.62 L152.119,6.797 L152.119,30.196 L152.119,30.373 C152.164,31.28 152.91,32.002 153.824,32.002 L156.29,32.002 C157.198,32.002 157.942,31.285 157.993,30.383 L157.993,30.185 L157.993,6.89 L157.993,6.527 C157.903,5.664 157.178,4.992 156.295,4.992 Z M140.247,22.795 L140.188,22.795 L137.776,22.795 L137.717,22.795 C136.796,22.811 136.054,23.559 136.039,24.483 L136.039,24.543 L136.039,30.257 L136.039,30.315 C136.054,31.249 136.812,32.004 137.745,32.004 L140.217,32.004 C141.097,32.004 141.821,31.333 141.913,30.474 L141.913,30.099 L141.913,24.702 L141.913,24.327 C141.823,23.474 141.114,22.81 140.247,22.795 Z M148.364,13.894 L148.131,13.894 L145.899,13.894 L145.664,13.894 C144.814,13.951 144.137,14.634 144.08,15.489 L144.08,15.723 L144.08,30.167 L144.08,30.402 C144.138,31.285 144.862,31.986 145.752,32.001 L145.811,32.001 L148.217,32.001 L148.276,32.001 C149.204,31.986 149.953,31.222 149.953,30.284 L149.953,15.606 C149.954,14.698 149.251,13.952 148.364,13.894 Z M132.207,27.375 L132.147,27.375 L129.736,27.375 L129.677,27.375 C128.757,27.391 128.014,28.138 128,29.062 L128,29.122 L128,30.257 L128,30.315 C128.015,31.249 128.773,32.004 129.706,32.004 L132.178,32.004 C133.058,32.004 133.782,31.333 133.874,30.474 L133.874,30.099 L133.874,29.281 L133.874,28.906 C133.782,28.054 133.074,27.389 132.207,27.375 Z" id="Chart"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
 </svg>

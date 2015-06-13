@@ -1,3 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="28" height="29" viewBox="0 0 28 29">
-  <image xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAdCAMAAACOj/wDAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABWVBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8AAAAlbOj/AAAAcXRSTlMAAwRjwfT505ZAAaz9bJvRTOTlvkO/NbXek2FQYKHIO2+FZR/VGP4SzyXGX391dq8vxSb2Cd8W1k6QZIaetDfr7fgN5j6gVJeOpD/OgFdr6tv37wVa2fqwROGRlD15mJx9OhPjNHGEISOBczHDTyjpGgABcL4AAAABYktHRACIBR1IAAAACXBIWXMAAAsSAAALEgHS3X78AAABE0lEQVQoz3XSV1vCQBCF4YAoglFUFEuwK/aO2MGGXSzYgr338v3/G12CUrJ77mbeZ/ZiZjUtE4cmy2/XWeQqpsRd6vEWWJlerlWQia8yH3WqvNX8x1+TO10LgTpyUt/QaASbmlsEtkJbO/b4BXZAZ1fIjnq30B7o7ZOM9gscgMEhCQ4LHIHRMQmOh4VOEIpMSnRK4DTMzEpwTqAH5qMSjIl1OxZYXFqW6IoYjcPqmgTXBRqwsQlb2ztGIr6bxT2B4X0OktGAtevk4dEfHqcbJ3CaPYUzYVqYSpdBOMu7//nF5dX1jVXc6twVfoJsXHCvxAd4VOITuJWo+eBZiS/wqsQ3eFe/a6JHlJiCDyV+fpnftuYPidCcbVmDmAIAAAAASUVORK5CYII=" width="28" height="29"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="28px" height="28px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>Flag</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Payment-History" sketch:type="MSArtboardGroup" transform="translate(-306.000000, -705.000000)" fill="#FFFFFF">
+            <g id="Tap-bar" sketch:type="MSLayerGroup" transform="translate(-1.000000, 668.000000)">
+                <g id="Tap-Bar-1-Copy" sketch:type="MSShapeGroup">
+                    <g id="Icons" transform="translate(50.000000, 33.000000)">
+                        <path d="M284.88,18.68 L281.585,8.111 C281.418,7.586 280.92,7.202 280.332,7.202 C280.126,7.202 279.934,7.247 279.763,7.33 C277.462,8.3 274.389,7.488 271.597,5.807 C268.623,4.016 264.941,3.342 262.23,4.765 C262.154,4.805 262.084,4.844 262.016,4.884 C261.471,5.229 261.111,5.832 261.111,6.516 C261.111,6.66 261.127,6.8 261.158,6.934 L261.252,7.239 L264.699,18.295 L264.766,18.504 C264.958,18.98 265.431,19.316 265.983,19.316 C266.182,19.316 266.37,19.273 266.538,19.194 C266.598,19.16 266.656,19.127 266.717,19.095 C269.432,17.63 272.866,18.15 276.064,20.129 C278.445,21.604 281.475,22.035 283.757,21.107 C284.499,20.791 284.987,20.105 284.987,19.308 C284.985,19.13 284.961,18.958 284.915,18.794 L284.88,18.68 Z M259.678,5.938 C259.454,5.223 258.688,4.823 257.963,5.042 C257.24,5.262 256.833,6.019 257.057,6.734 L264.644,31.048 C264.863,31.751 265.612,32.151 266.326,31.952 L266.393,31.932 C267.095,31.698 267.485,30.953 267.268,30.251 L259.678,5.938 Z" id="Flag"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
 </svg>

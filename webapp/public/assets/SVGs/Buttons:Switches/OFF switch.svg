@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="104px" height="62px" viewBox="0 0 104 62" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>Bg</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Payment-Settings-Disbabled" sketch:type="MSArtboardGroup" transform="translate(-616.000000, -244.000000)" fill="#2B2C2E">
+            <g id="Option-text-+-Buttons-+-Off" sketch:type="MSLayerGroup" transform="translate(-167.000000, 235.000000)">
+                <g id="Off" transform="translate(783.000000, 9.000000)" sketch:type="MSShapeGroup">
+                    <path d="M10,0 L94,0 C99.523,0 104,4.477 104,10 L104,52 C104,57.523 99.523,62 94,62 L10,62 C4.477,62 0,57.523 0,52 L0,10 C0,4.477 4.477,0 10,0 L10,0 Z" id="Bg"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

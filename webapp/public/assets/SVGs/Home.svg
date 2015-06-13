@@ -1,3 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="30" height="31" viewBox="0 0 30 31">
-  <image xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAfCAMAAADHso01AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAilBMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8AAAD2iU6fAAAALHRSTlMABIXzGMLBPucBc/xyDa0s2lz1WwaVHskdRexk/Wfx7zADEA/l6epN6OtSUwAo/twAAAABYktHRACIBR1IAAAACXBIWXMAAAsSAAALEgHS3X78AAAAqUlEQVQoz93TyRKCMAyA4bAoILKIYAVRS0ERzfs/nyxWlgnc9T+l+Q7MFAAYpKiapiowk77CurVOq2Fim2kQaG1s/GRvrak6Lg5ynbF6Po7yvaHuApwU7L8YRkgUhZ0eGJKxY6NxgjMlMcApxdnSM1xwoSvgYr/BjGfNNWWckczlO+AkC8nizzinuJDTrf9w73JXQPnopurZ86vqdmZZH3LRNP4t2lX9tDfAPG5sNQEr7AAAAABJRU5ErkJggg==" width="30" height="31"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="30px" height="31px" viewBox="0 0 30 31" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>Home</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Payment-History" sketch:type="MSArtboardGroup" transform="translate(-49.000000, -704.000000)" fill="#FFFFFF">
+            <g id="Tap-bar" sketch:type="MSLayerGroup" transform="translate(-1.000000, 668.000000)">
+                <g id="Tap-Bar-1-Copy" sketch:type="MSShapeGroup">
+                    <g id="Icons" transform="translate(50.000000, 33.000000)">
+                        <path d="M29.368,13.466 L29.368,13.466 L16.358,3.402 C15.988,3.153 15.514,3.005 14.997,3.005 C14.484,3.005 14.008,3.153 13.64,3.402 C13.64,3.402 1.008,13.18 0.768,13.359 L0.766,13.362 C0.302,13.75 0.01,14.334 0.01,14.985 L0.01,15.602 L0.01,28.049 L0.01,30.888 C0.01,32.062 0.965,33.015 2.145,33.015 L7.871,33.015 C9.052,33.015 10.01,32.063 10.01,30.888 L10.01,23.123 C10.01,21.947 10.967,20.996 12.147,20.996 L17.85,20.996 C19.031,20.996 19.989,21.948 19.989,23.123 L19.989,30.888 C19.989,32.064 20.945,33.015 22.126,33.015 L27.852,33.015 C29.033,33.015 29.989,32.061 29.989,30.888 L29.989,28.049 L29.989,15.602 L29.989,15.117 L29.989,14.826 C29.954,14.296 29.723,13.819 29.368,13.466 L29.368,13.466 Z" id="Home"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
 </svg>
