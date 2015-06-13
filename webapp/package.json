@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/Lukeas14/benzpay",
   "dependencies": {
-    "express": "^4.12.4"
+    "express": "^4.12.4",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.5.2",
+    "gulp-less": "^3.0.3"
   }
 }
