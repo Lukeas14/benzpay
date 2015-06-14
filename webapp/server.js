@@ -3,12 +3,21 @@ var app = express();
 var request = require('request');
 var WebSocketServer = require('ws').Server;
 var events = require("events");
+var haversine = require('haversine');
 
 var vehicleUri = "http://172.31.99.3/vehicle";
 var vehicleData = null;
 var vehicleDataInterval = null;
 var vehicleDataIndex = 0;
 var vehicleDataJson = require('./vehicleData.json').responses;
+
+var points = [
+	{
+		name: "Chevron Gas Station",
+		latitude: 37.7764896389,
+		longitude:-122.393724972
+	}
+];
 
 var serialport = require( "serialport" );
 
@@ -52,9 +61,12 @@ setInterval(function(){
 		//console.log(body);
 	});*/
 
-
+	if(vehicleDataIndex === vehicleDataJson) {
+		vehicleDataIndex = 0;
+	}
 	vehicleDataIndex++;
 	vehicleData = vehicleDataJson[vehicleDataIndex];
+
 }, 100);
 
 
@@ -165,6 +177,12 @@ wss.on('connection', function connection(ws) {
 
 	//Send vehicleData
 	vehicleDataInterval = setInterval(function(){
+
+		var distance = haversine({
+			latitude: vehicleData.GPS_Latitude,
+			longitude: vehicleData.GPS_Longitude
+		}, points[0]);
+		//console.log(distance);
 		//console.log('wtf', JSON.stringify(vehicleData));
 		try {
 			ws.send(JSON.stringify(vehicleData));
