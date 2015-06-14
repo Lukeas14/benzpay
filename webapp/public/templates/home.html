@@ -1,21 +1,21 @@
-<div class="row">
+<div>
 
-	<div class="row">
+	<div>
 		<div class="col-md-6 col-offset-md-3">
 			Auto pay is active
 		</div>
 	</div>
 
-	<div class="row">
+	<div>
 		<div class="col-md-6 col-offset-md-3">
 			Your bitcoin address is: {{ bitcoinAddress }}
 		</div>
 	</div>
 
-	<div class="row">
+	<div>
 		<div class="col-md-6 col-offset-md-3">
 			{{ bitcoinBalance * 100 }} mBTC<br>
-                        <span class="small"> {{ bitcoinBalance * 0.004242 }} USD </span>
+				<span class="small"> {{ ( bitcoinBalance * 235.97 ).toFixed( 2 ) }} USD </span>
 		</div>
 	</div>
 
