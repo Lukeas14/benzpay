@@ -33,8 +33,8 @@ var points = [
 		name: "2hr Parking",
 		logo: "2hr Parking Logo.svg",
 		price: '$3.00',
-		latitude: 37.8074180278,
-		longitude:-122.415678528
+		latitude: 37.8077966389,
+		longitude:-122.411646167
 	}
 ];
 
@@ -103,7 +103,7 @@ wss.on('connection', function connection(ws) {
 			points[point].distance = parseFloat(haversine({
 				latitude: vehicleData.GPS_Latitude,
 				longitude: vehicleData.GPS_Longitude
-			}, points[0])).toFixed(2);
+			}, points[point])).toFixed(2);
 		}
 
 		vehicleData.points = points;

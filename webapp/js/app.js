@@ -205,11 +205,6 @@ angular.module('benzpay', ['ngRoute'])
 			}
 		);
 		map.addListener("displayready", function() {
-			$scope.points = [{'name':'wtf32322f3knkn'}];
-			var marker = new nokia.maps.map.StandardMarker([37.8074180278, -122.415678528], {
-				text: "Hi!" // Small label
-			});
-			map.objects.add(marker);
 
 			/*
 			var marker = new nokia.maps.map.Marker(
@@ -246,7 +241,7 @@ angular.module('benzpay', ['ngRoute'])
 			};
 			connection.onmessage = function (message) {
 				var vehicleData = JSON.parse(message.data);
-				console.log(vehicleData.points.length);
+				console.log(vehicleData.GPS_Latitude, vehicleData.GPS_Longitude);
 
 				if(!markersSet) {
 					for (var i = 0; i < vehicleData.points.length; i++) {
