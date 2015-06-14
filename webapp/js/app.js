@@ -200,9 +200,11 @@ angular.module('benzpay', ['ngRoute'])
 		);
 		map.addListener("displayready", function() {
 
-			var marker = new nokia.maps.map.StandardMarker([37.8085741667, -122.415423667], {
+			var marker = new nokia.maps.map.StandardMarker([37.8074180278, -122.415678528], {
 				text: "Hi!" // Small label
 			});
+			map.objects.add(marker);
+
 			var marker = new nokia.maps.map.Marker(
 				new nokia.maps.geo.Coordinate(37.8085741667, -122.415423667),{
 					title: 'Gas Station',
@@ -226,6 +228,7 @@ angular.module('benzpay', ['ngRoute'])
 			// connection.onmessage = function (message) {
 			// 	var vehicleData = JSON.parse(message.data);
 
+<<<<<<< HEAD
 			// 	if(vehicleData.command){
 			// 		console.log('command', vehicleData.command);
 			// 	}
@@ -234,6 +237,16 @@ angular.module('benzpay', ['ngRoute'])
 			// 		//map.setCenter([vehicleData.GPS_Latitude, vehicleData.GPS_Longitude]);
 			// 	}
 			// };
+=======
+				if(vehicleData.command){
+					console.log('command', vehicleData.command);
+				}
+				else {
+					console.log(vehicleData);
+					map.setCenter([vehicleData.GPS_Latitude, vehicleData.GPS_Longitude]);
+				}
+			};
+>>>>>>> fa3c00af68937ee10a46977ddba1462ebadde05c
 		});
 
 

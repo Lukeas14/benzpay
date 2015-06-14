@@ -7,6 +7,9 @@ var events = require("events");
 var vehicleUri = "http://172.31.99.3/vehicle";
 var vehicleData = null;
 var vehicleDataInterval = null;
+var vehicleDataIndex = 0;
+var vehicleDataJson = require('./vehicleData.json').responses;
+
 var serialport = require( "serialport" );
 
 var glob = require( "glob" )
@@ -40,15 +43,19 @@ var server = app.listen(3000, function () {
 
 
 setInterval(function(){
-	request(vehicleUri, function(err, res, body){
+	/*request(vehicleUri, function(err, res, body){
 		try {
 			vehicleData = JSON.parse(body);
 		} catch(e){
 			console.log("Bad JSON");
 		}
 		//console.log(body);
-	});
-}, 500);
+	});*/
+
+
+	vehicleDataIndex++;
+	vehicleData = vehicleDataJson[vehicleDataIndex];
+}, 100);
 
 
 var wss = new WebSocketServer({ port: 3001 });
