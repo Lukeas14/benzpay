@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="benzpay">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,31 +19,27 @@
 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 </head>
-<body>
+<body ng-controller="MainController">
 
 <header class="header">
-	<
+	header
 </header>
 
 <!-- Begin page content -->
-<div class="container">
-	<div class="page-header">
-		<h1>Sticky footer</h1>
-	</div>
-	<p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS.</p>
-	<p>Use <a href="../sticky-footer-navbar">the sticky footer with a fixed navbar</a> if need be, too.</p>
+<div class="wrapper">
+	<div class="content" ng-view></div>
 </div>
 
 <footer class="footer">
 		<ul>
-			<li><a href=""><img class="img-responsive" src="assets/SVGs/Home.svg"/></a></li>
-			<li><a href=""><img class="img-responsive" src="assets/SVGs/Signal.svg"/></a></li>
-			<li><a href=""><img class="img-responsive" src="assets/SVGs/Flag.svg"/></a></li>
-			<li><a href=""><img class="img-responsive" src="assets/SVGs/Peer.svg"/></a></li>
-			<li><a href=""><img class="img-responsive" src="assets/SVGs/Peer.svg"/></a></li>
-			<li class="active"><a href=""><img class="img-responsive" src="assets/SVGs/Bitcoincloud.svg"/></a></li>
-			<li><a href=""><img class="img-responsive" src="assets/SVGs/Parking.svg"/></a></li>
-			<li><a href=""><img class="img-responsive" src="assets/SVGs/Tachometer.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/home'}"><a href="#/home"><img class="img-responsive" src="assets/SVGs/Home.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/wifi'}"><a href="#/wifi"><img class="img-responsive" src="assets/SVGs/Signal.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/warnings'}"><a href="#/warnings"><img class="img-responsive" src="assets/SVGs/Flag.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/peers'}"><a href="#/peers"><img class="img-responsive" src="assets/SVGs/Peer.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/settings'}"><a href="#/settings"><img class="img-responsive" src="assets/SVGs/Settings.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/pay'}"><a href="#/pay"><img class="img-responsive" src="assets/SVGs/Bitcoincloud.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/parking'}"><a href="#/parking"><img class="img-responsive" src="assets/SVGs/Parking.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/drive'}"><a href="#/drive"><img class="img-responsive" src="assets/SVGs/Tachometer.svg"/></a></li>
 		</ul>
 </footer>
 
@@ -51,5 +47,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
