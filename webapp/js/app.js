@@ -44,6 +44,119 @@ angular.module('benzpay', ['ngRoute'])
 		$scope.activeTab;
 		$scope.$route = $route;
 		console.log('main controller');
+
+			// Place code implementing the functionality of app
+			// here, for example to manipulate the map view.
+			window.WebSocket = window.WebSocket || window.MozWebSocket;
+			var connection = new WebSocket('ws://127.0.0.1:3001');
+			connection.onopen = function () {
+				console.log('websocket open');
+			};
+			connection.onerror = function (error) {
+				console.log('websocket error', error);
+			};
+			connection.onmessage = function (message) {
+				var vehicleData = JSON.parse(message.data);
+
+				if(vehicleData.command){
+					console.log('command', vehicleData.command);
+				}
+
+				if(vehicleData.command==="right"){
+
+					//get current state
+					if($state.$current==="home"){
+						$state.go('wifi')
+
+					}
+					if($state.$current==="wifi"){
+						$state.go('warnings')
+
+					}
+					if($state.$current==="warnings"){
+						$state.go('peers')
+
+					}
+					if($state.$current==="peers"){
+						$state.go('settings')
+
+					}
+
+					if($state.$current==="settings"){
+						$state.go('pay')
+
+					}
+
+					if($state.$current==="pay"){
+						$state.go('parking')
+
+					}
+					if($state.$current==="parking"){
+						$state.go('drive')
+
+					}
+					if($state.$current==="drive"){
+						$state.go('home')
+
+					}
+
+				}				
+
+				if(vehicleData.command==="left"){
+
+					//get current state
+					if($state.$current==="home"){
+						$state.go('drive')
+
+					}
+					if($state.$current==="drive"){
+						$state.go('parking')
+
+					}
+					if($state.$current==="parking"){
+						$state.go('pay')
+
+					}
+					if($state.$current==="pay"){
+						$state.go('settings')
+
+					}
+
+					if($state.$current==="settings"){
+						$state.go('peers')
+
+					}
+
+					if($state.$current==="peers"){
+						$state.go('warnings')
+
+					}
+					if($state.$current==="warnings"){
+						$state.go('wifi')
+
+					}
+					if($state.$current==="wifi"){
+						$state.go('home')
+
+					}
+
+				}
+
+				if(vehicleData.command==="menu"){
+
+					$state.go('home')
+				}
+				if(vehicleData.command==="back"){
+
+					$state.go('home')
+				}
+				else {
+					//console.log(vehicleData);
+					//map.setCenter([vehicleData.GPS_Latitude, vehicleData.GPS_Longitude]);
+				}
+			};
+
+
 	})
 
 	.controller('HomeController', function($scope, $route, $routeParams) {
@@ -102,19 +215,29 @@ angular.module('benzpay', ['ngRoute'])
 			);
 			map.objects.add(marker);
 
-			// Place code implementing the functionality of app
-			// here, for example to manipulate the map view.
-			window.WebSocket = window.WebSocket || window.MozWebSocket;
-			var connection = new WebSocket('ws://127.0.0.1:3001');
-			connection.onopen = function () {
-				console.log('websocket open');
-			};
-			connection.onerror = function (error) {
-				console.log('websocket error', error);
-			};
-			connection.onmessage = function (message) {
-				var vehicleData = JSON.parse(message.data);
+			// // Place code implementing the functionality of app
+			// // here, for example to manipulate the map view.
+			// window.WebSocket = window.WebSocket || window.MozWebSocket;
+			// var connection = new WebSocket('ws://127.0.0.1:3001');
+			// connection.onopen = function () {
+			// 	console.log('websocket open');
+			// };
+			// connection.onerror = function (error) {
+			// 	console.log('websocket error', error);
+			// };
+			// connection.onmessage = function (message) {
+			// 	var vehicleData = JSON.parse(message.data);
 
+<<<<<<< HEAD
+			// 	if(vehicleData.command){
+			// 		console.log('command', vehicleData.command);
+			// 	}
+			// 	else {
+			// 		//console.log(vehicleData);
+			// 		//map.setCenter([vehicleData.GPS_Latitude, vehicleData.GPS_Longitude]);
+			// 	}
+			// };
+=======
 				if(vehicleData.command){
 					console.log('command', vehicleData.command);
 				}
@@ -123,6 +246,7 @@ angular.module('benzpay', ['ngRoute'])
 					map.setCenter([vehicleData.GPS_Latitude, vehicleData.GPS_Longitude]);
 				}
 			};
+>>>>>>> fa3c00af68937ee10a46977ddba1462ebadde05c
 		});
 
 
