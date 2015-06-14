@@ -13,9 +13,28 @@ var vehicleDataJson = require('./vehicleData.json').responses;
 
 var points = [
 	{
-		name: "Chevron Gas Station",
-		latitude: 37.7764896389,
-		longitude:-122.393724972
+		id: 1,
+		name: "Chevron Gas - 12 gal",
+		logo: "Chevron Gas Logo.svg",
+		price: '$42.12',
+		latitude: 37.8074180278,
+		longitude:-122.415678528
+	},
+	{
+		id: 2,
+		name: "Starbucks Order",
+		logo: "Starbucks Coffee Logo.svg",
+		price: '$7.45',
+		latitude: 37.8074734444,
+		longitude:-122.414194583
+	},
+	{
+		id: 3,
+		name: "2hr Parking",
+		logo: "2hr Parking Logo.svg",
+		price: '$3.00',
+		latitude: 37.8074180278,
+		longitude:-122.415678528
 	}
 ];
 
@@ -61,7 +80,8 @@ setInterval(function(){
 		//console.log(body);
 	});*/
 
-	if(vehicleDataIndex === vehicleDataJson) {
+	console.log(vehicleDataIndex, vehicleDataJson.length);
+	if(vehicleDataIndex === vehicleDataJson.length - 5) {
 		vehicleDataIndex = 0;
 	}
 	vehicleDataIndex++;
@@ -70,14 +90,46 @@ setInterval(function(){
 }, 100);
 
 
-var wss = new WebSocketServer({ port: 3001 });
-console.log("Websocket server opened at port: 3001");
+var wss = new WebSocketServer({ port: 3002 });
+console.log("Websocket server opened at port: 3002");
 wss.on('connection', function connection(ws) {
 	console.log("Connection received on websocket server.");
 
-	ws.on('message', function incoming(message) {
-		console.log('received: %s', message);
+
+	//Send vehicleData
+	vehicleDataInterval = setInterval(function () {
+
+		for(point in points){
+			points[point].distance = parseFloat(haversine({
+				latitude: vehicleData.GPS_Latitude,
+				longitude: vehicleData.GPS_Longitude
+			}, points[0])).toFixed(2);
+		}
+
+		vehicleData.points = points;
+		//console.log(vehicleData);
+		//console.log('wtf', JSON.stringify(vehicleData));
+		try {
+			ws.send(JSON.stringify(vehicleData));
+		} catch (e) {
+			console.log('message not read');
+		}
+	}, 500);
+
+
+	//Connection closed
+	ws.on('close', function close() {
+		console.log('CLOSING CONNECTION');
+		clearInterval(vehicleDataInterval);
 	});
+});
+
+
+
+var wss2 = new WebSocketServer({ port: 3001 });
+console.log("Websocket server opened at port: 3001");
+wss2.on('connection', function connection(ws) {
+	console.log("Connection received on websocket server.");
 
 	//Send controls
 	try {
@@ -175,34 +227,9 @@ wss.on('connection', function connection(ws) {
 		console.log('comand error', e);
 	}
 
-	//Send vehicleData
-	vehicleDataInterval = setInterval(function(){
-
-		var distance = haversine({
-			latitude: vehicleData.GPS_Latitude,
-			longitude: vehicleData.GPS_Longitude
-		}, points[0]);
-		//console.log(distance);
-		//console.log('wtf', JSON.stringify(vehicleData));
-		try {
-			ws.send(JSON.stringify(vehicleData));
-		} catch(e){
-			console.log('message not read');
-		}
-	}, 500);
-
-
 	//Connection closed
 	ws.on('close', function close(){
 		console.log('CLOSING CONNECTION');
 		clearInterval(vehicleDataInterval);
 	});
 });
-
-
-var browserWs;
-
-var wss = new WebSocketServer({ port: 3002 });
-console.log("Websocket server opened at port: 3002");
-
-
