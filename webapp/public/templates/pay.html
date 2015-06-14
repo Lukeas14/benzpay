@@ -1,1 +1,13 @@
 <div id="map-container"></div>
+<div id="map-overlay">
+	<div class="point" ng-repeat="point in points">
+		<img class="pull-left" src="assets/SVGs/Map SVGs/Company logos/{{point.logo}}"/>
+		<div class="col-md-4">
+			<div><p class="name">{{ point.name }}</p>
+			</div>
+			<p class="pull-left">{{ point.distance }} mi</p>
+			<p class="pull-right price">{{ point.price }}</p>
+		</div>
+	</div>
+
+</div>

@@ -20,6 +20,7 @@ body {
 }
 .footer {
   position: absolute;
+  z-index: 999999;
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
@@ -61,4 +62,33 @@ body {
 #map-container {
   width: 100%;
   height: 100%;
+}
+#map-overlay {
+  position: absolute;
+  z-index: 9999;
+  width: 300px;
+  height: 100%;
+  top: 60px;
+  right: 0px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #DDD;
+}
+#map-overlay .point {
+  width: 290px;
+  margin: 5px;
+  padding: 5px;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.4);
+}
+#map-overlay .point p.name {
+  font-size: 1.2em;
+  color: #FFF;
+}
+#map-overlay .point p.price {
+  color: #00a000;
+  font-weight: bold;
+}
+#map-overlay .point img {
+  margin-right: 10px;
+  margin-top: 5px;
 }

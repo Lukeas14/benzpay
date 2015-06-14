@@ -184,6 +184,12 @@ angular.module('benzpay', ['ngRoute'])
 	})
 
 	.controller('PayController', function($scope, $routeParams) {
+		var setPoints = function(points){
+			console.log('set points');
+			$scope.points = points;
+		};
+		var markersSet = false;
+
 		console.log('set up map');
 		nokia.Settings.set("app_id", "evalLunne37Ciwejfare7");
 		nokia.Settings.set("app_code", "RrEcE54Hc6U2VGp70LqoQQ");
@@ -202,22 +208,24 @@ angular.module('benzpay', ['ngRoute'])
 			}
 		);
 		map.addListener("displayready", function() {
-
+			$scope.points = [{'name':'wtf32322f3knkn'}];
 			var marker = new nokia.maps.map.StandardMarker([37.8074180278, -122.415678528], {
 				text: "Hi!" // Small label
 			});
 			map.objects.add(marker);
 
+			/*
 			var marker = new nokia.maps.map.Marker(
-				new nokia.maps.geo.Coordinate(37.7764188333, -122.388101472),{
+				new nokia.maps.geo.Coordinate(37.8074180278, -122.415678528),{
 					title: 'Gas Station',
 					visibility: true,
-					icon: H.map.DomIcon(chevronMarker),
+					//icon: H.map.DomIcon(chevronMarker),
+					icon: "assets/SVGs/Map SVGs/Company logos/Chevron Gas Logo.svg",
 					anchor: new nokia.maps.util.Point(32, 32)
 				}
 			);
 			map.objects.add(marker);
-
+*/
 			// // Place code implementing the functionality of app
 			// // here, for example to manipulate the map view.
 			// window.WebSocket = window.WebSocket || window.MozWebSocket;
@@ -231,16 +239,41 @@ angular.module('benzpay', ['ngRoute'])
 			// connection.onmessage = function (message) {
 			// 	var vehicleData = JSON.parse(message.data);
 
-				if(vehicleData.command){
-					console.log('command', vehicleData.command);
+			window.WebSocket = window.WebSocket || window.MozWebSocket;
+			var connection = new WebSocket('ws://127.0.0.1:3002');
+			connection.onopen = function () {
+				console.log('websocket open');
+			};
+			connection.onerror = function (error) {
+				console.log('websocket error', error);
+			};
+			connection.onmessage = function (message) {
+				var vehicleData = JSON.parse(message.data);
+				console.log(vehicleData.points.length);
+
+				if(!markersSet) {
+					for (var i = 0; i < vehicleData.points.length; i++) {
+						console.log('OOINT', vehicleData.points[i]);
+						var marker = new nokia.maps.map.Marker(
+							new nokia.maps.geo.Coordinate(vehicleData.points[i].latitude, vehicleData.points[i].longitude), {
+								title: vehicleData.points[i].name,
+								visibility: true,
+								//icon: H.map.DomIcon(chevronMarker),
+								icon: "assets/SVGs/Map SVGs/Company logos/" + vehicleData.points[i].logo,
+								anchor: new nokia.maps.util.Point(32, 32)
+							}
+						);
+						map.objects.add(marker);
+					}
+					markersSet = true;
 				}
-				else {
-					console.log(vehicleData);
-					map.setCenter([vehicleData.GPS_Latitude, vehicleData.GPS_Longitude]);
-				}
+
+				$scope.points = vehicleData.points;
+				$scope.$apply();
+				map.setCenter([vehicleData.GPS_Latitude, vehicleData.GPS_Longitude]);
 			};
 		});
-
+		//$scope.points = [{'name':'wtf2323'}];
 
 	})
 
