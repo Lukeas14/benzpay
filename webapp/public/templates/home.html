@@ -8,14 +8,14 @@
 
 	<div class="row">
 		<div class="col-md-6 col-offset-md-3">
-			Your bitcoin address is: 1CsyGSzvAZeEyc2yidx6qTFpqHC2G5jKek
+			Your bitcoin address is: {{ bitcoinAddress }}
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="col-md-6 col-offset-md-3">
-			BTC: {{bitcoinBalance}}<br>
-			<span class="small">Last 4 of credit card: 6584</span>
+			{{ bitcoinBalance * 100 }} mBTC<br>
+                        <span class="small"> {{ bitcoinBalance * 0.004242 }} USD </span>
 		</div>
 	</div>
 

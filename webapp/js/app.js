@@ -44,6 +44,9 @@ angular.module('benzpay', ['ngRoute'])
 		$scope.activeTab;
 		$scope.$route = $route;
 		console.log('main controller');
+		$scope.bitcoinAddress = "1LvFcvjYioPtgzkrtw78Wzaik2eC3kiwDX"
+		$scope.bitcoinQR_URL = "http://chart.apis.google.com/chart?chf=a,s,000000|bg,s,FFFFFF&chs=150x150&chld=M|4&cht=qr&chl=1LvFcvjYioPtgzkrtw78Wzaik2eC3kiwDX&choe=UTF-8"
+		$scope.bitcoinBalance = 0.20
 
 			// Place code implementing the functionality of app
 			// here, for example to manipulate the map view.
@@ -228,16 +231,6 @@ angular.module('benzpay', ['ngRoute'])
 			// connection.onmessage = function (message) {
 			// 	var vehicleData = JSON.parse(message.data);
 
-<<<<<<< HEAD
-			// 	if(vehicleData.command){
-			// 		console.log('command', vehicleData.command);
-			// 	}
-			// 	else {
-			// 		//console.log(vehicleData);
-			// 		//map.setCenter([vehicleData.GPS_Latitude, vehicleData.GPS_Longitude]);
-			// 	}
-			// };
-=======
 				if(vehicleData.command){
 					console.log('command', vehicleData.command);
 				}
@@ -246,7 +239,6 @@ angular.module('benzpay', ['ngRoute'])
 					map.setCenter([vehicleData.GPS_Latitude, vehicleData.GPS_Longitude]);
 				}
 			};
->>>>>>> fa3c00af68937ee10a46977ddba1462ebadde05c
 		});
 
 
