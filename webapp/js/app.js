@@ -93,10 +93,10 @@ angular.module('benzpay', ['ngRoute'])
 			map.objects.add(marker);
 
 			var marker = new nokia.maps.map.Marker(
-				new nokia.maps.geo.Coordinate(37.8085741667, -122.415423667),{
+				new nokia.maps.geo.Coordinate(37.7764188333, -122.388101472),{
 					title: 'Gas Station',
 					visibility: true,
-					icon: chevronMarker,
+					icon: H.map.DomIcon(chevronMarker),
 					anchor: new nokia.maps.util.Point(32, 32)
 				}
 			);
