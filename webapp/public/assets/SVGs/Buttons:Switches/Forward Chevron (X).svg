@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>Forward</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Payment-History" sketch:type="MSArtboardGroup" transform="translate(-979.000000, -566.000000)" fill="#D0021B">
+            <g id="Transitions-(red)" sketch:type="MSLayerGroup" transform="translate(24.000000, 317.000000)">
+                <g id="Transaction-2-Copy-4" transform="translate(1.000000, 239.000000)" sketch:type="MSShapeGroup">
+                    <path d="M975.462976,21.2932653 L975.462976,21.4741235 L975.259619,21.4741235 L964.438794,31.0977855 L963.300211,30.0856475 L972.982991,21.4741235 L954,21.4741235 L954,20.042528 L972.982991,20.042528 L963.300211,11.4310041 L964.438794,10.4183889 L975.259619,20.0420508 L975.462976,20.0420508 L975.462976,20.2229091 L975.820862,20.5412005 L975.577263,20.7578486 L975.820862,20.9749739 L975.462976,21.2932653 Z" id="Forward"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
