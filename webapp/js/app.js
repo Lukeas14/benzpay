@@ -87,9 +87,11 @@ angular.module('benzpay', ['ngRoute'])
 		);
 		map.addListener("displayready", function() {
 
-			var marker = new nokia.maps.map.StandardMarker([37.8085741667, -122.415423667], {
+			var marker = new nokia.maps.map.StandardMarker([37.8074180278, -122.415678528], {
 				text: "Hi!" // Small label
 			});
+			map.objects.add(marker);
+
 			var marker = new nokia.maps.map.Marker(
 				new nokia.maps.geo.Coordinate(37.8085741667, -122.415423667),{
 					title: 'Gas Station',
@@ -117,8 +119,8 @@ angular.module('benzpay', ['ngRoute'])
 					console.log('command', vehicleData.command);
 				}
 				else {
-					//console.log(vehicleData);
-					//map.setCenter([vehicleData.GPS_Latitude, vehicleData.GPS_Longitude]);
+					console.log(vehicleData);
+					map.setCenter([vehicleData.GPS_Latitude, vehicleData.GPS_Longitude]);
 				}
 			};
 		});
