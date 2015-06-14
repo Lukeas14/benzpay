@@ -1,23 +1,20 @@
 <div>
 
-	<div>
-		<div class="col-md-6 col-offset-md-3">
-			Auto pay is active
+		<div class="col-md-6 col-offset-md-3 autopay">
+			Autopay is Active
+			<img class="pull-right arrow" src="assets/SVGs/Buttons:Switches/Forward Chevron.svg"/>
 		</div>
-	</div>
 
-	<div>
-		<div class="col-md-6 col-offset-md-3">
-			Your bitcoin address is: {{ bitcoinAddress }}
+		<div class="col-md-6 col-offset-md-3 bitaddress">
+			Your bitcoin address is:
+			<br/>{{ bitcoinAddress }}
 		</div>
-	</div>
 
-	<div>
-		<div class="col-md-6 col-offset-md-3">
-			{{ bitcoinBalance * 100 }} mBTC<br>
-				<span class="small"> {{ ( bitcoinBalance * 235.97 ).toFixed( 2 ) }} USD </span>
+		<div class="col-md-6 col-offset-md-3 bitbalance">
+			<span class="usd">USD {{bal.usd}}</span>
+			/
+			mBTC {{ bal.btc }}
 		</div>
-	</div>
 
 
 </div>

@@ -1,1 +1,7 @@
-<h1>Parking</h1>
+<h1>Past Payments</h1>
+
+<div ng-repeat="payment in payments" class="past-payments">
+	<div class="name col-md-4 pull-left">{{payment.name}}</div>
+	<div class="amount col-md-3 pull-left">{{payment.amount}}</div>
+	<div class="account col-md-5 pull-left">{{payment.account}}</div>
+</div>

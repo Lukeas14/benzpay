@@ -14,7 +14,7 @@ var vehicleDataJson = require('./vehicleData.json').responses;
 var points = [
 	{
 		id: 1,
-		name: "Chevron Gas - 12 gal",
+		name: "Chevron Gas",
 		logo: "Chevron Gas Logo.svg",
 		price: '$42.12',
 		latitude: 37.8074180278,
@@ -87,7 +87,7 @@ setInterval(function(){
 	vehicleDataIndex++;
 	vehicleData = vehicleDataJson[vehicleDataIndex];
 
-}, 100);
+}, 300);
 
 
 var wss = new WebSocketServer({ port: 3002 });
@@ -219,7 +219,11 @@ wss2.on('connection', function connection(ws) {
 						}
 					};
 					console.log('command message', commandWithArg);
-					ws.send(JSON.stringify(commandWithArg));
+					try {
+						ws.send(JSON.stringify(commandWithArg));
+					} catch(e){
+						console.log('message not read');
+					}
 				}
 			});
 		});
@@ -230,6 +234,5 @@ wss2.on('connection', function connection(ws) {
 	//Connection closed
 	ws.on('close', function close(){
 		console.log('CLOSING CONNECTION');
-		clearInterval(vehicleDataInterval);
 	});
 });

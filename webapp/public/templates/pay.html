@@ -2,12 +2,20 @@
 <div id="map-overlay">
 	<div class="point" ng-repeat="point in points | orderBy:'distance'" ng-show="point.distance < 1">
 		<img class="pull-left" src="assets/SVGs/Map SVGs/Company logos/{{point.logo}}"/>
-		<div class="col-md-4">
-			<div><p class="name">{{ point.name }}</p>
+		<div class="pull-left">
+			<div>
+				<p class="name">{{ point.name }}</p>
 			</div>
 			<p class="pull-left">{{ point.distance }} mi</p>
-			<p class="pull-right price">{{ point.price }}</p>
+		</div>
+		<div class="col-md-4 pull-right price">{{ point.price }}<br/>
+			<span class="pull-left gas" ng-if="point.id == 1">12 gal</span>
 		</div>
 	</div>
 
+</div>
+<div id="payment-ask" ng-show="payment">
+	<div class="title">Payment for {{payment.name}} <span class="amount">{{payment.price}}</span>?</div>
+	<img class="activeee" src="assets/SVGs/Buttons:Switches/Confirm.svg"/>
+	<img src="assets/SVGs/Buttons:Switches/Decline.svg"/>
 </div>
