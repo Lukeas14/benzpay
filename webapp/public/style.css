@@ -25,7 +25,8 @@ body {
 .header .logo {
   width: 338px;
   margin-top: -84px;
-  margin-left: 330px;
+  margin-left: 210px;
+  opacity: 0;
 }
 .header .right-head {
   color: #CCC;
