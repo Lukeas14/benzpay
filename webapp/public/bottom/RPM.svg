@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="44px" height="31px" viewBox="0 0 44 31" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>RPM</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Map---Events" sketch:type="MSArtboardGroup" transform="translate(-425.000000, -626.000000)" fill="#FFFFFF">
+            <g id="Nav" sketch:type="MSLayerGroup" transform="translate(0.000000, 611.000000)">
+                <g id="Nav-Icons" transform="translate(45.000000, 13.000000)" sketch:type="MSShapeGroup">
+                    <path d="M423.694786,24.3664238 C423.694786,27.0680815 423.140648,29.9084292 422.032371,32.748777 L382.266259,32.748777 C381.088326,30.1161534 380.534188,27.3448397 380.534188,24.3664238 C380.326464,12.7276528 390.440888,2.54357264 402.149315,2.7519187 C413.788086,2.54357264 423.90251,12.7276528 423.694786,24.3664238 L423.694786,24.3664238 L423.694786,24.3664238 Z M405.474767,23.6045614 L405.474767,23.1194571 C405.474767,22.842077 405.405733,22.6343528 405.336077,22.4266287 L414.342224,12.8663429 L412.402429,10.9265477 L402.772487,19.9326952 C402.426073,19.724971 401.733245,19.7940051 401.664211,19.7940051 C399.516691,19.7940051 397.715586,21.5260761 397.715586,23.6735954 C397.715586,25.8211147 399.447657,27.5531858 401.595177,27.5531858 C402.634419,27.5531858 403.604006,27.1377375 404.36649,26.3752531 C405.128353,25.6133906 405.474767,24.7128381 405.474767,23.6045614 L405.474767,23.6045614 L405.474767,23.6045614 Z" id="RPM"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

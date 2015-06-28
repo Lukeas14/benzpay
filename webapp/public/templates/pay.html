@@ -1,21 +1,24 @@
 <div id="map-container"></div>
 <div id="map-overlay">
-	<div class="point" ng-repeat="point in points | orderBy:'distance'" ng-show="point.distance < 1">
-		<img class="pull-left" src="assets/SVGs/Map SVGs/Company logos/{{point.logo}}"/>
-		<div class="pull-left">
-			<div>
-				<p class="name">{{ point.name }}</p>
-			</div>
-			<p class="pull-left">{{ point.distance }} mi</p>
+	<div class="submenu">
+		<div class="col-md-4 text-center sub" id="parking" ng-click="newMode('parking')" ng-class="{active:mode === 'parking'}"></div>
+		<div class="col-md-4 text-center sub" id="gas" ng-click="newMode('gas')" ng-class="{active:mode === 'gas'}"></div>
+		<div class="col-md-4 text-center sub" id="events" ng-click="newMode('events')" ng-class="{active:mode === 'events'}"></div>
+	</div>
+	<div class="mode-title">
+		{{ modeTitles[mode] }}
+	</div>
+	<div class="point" ng-repeat="point in points | orderBy:'name'" >
+		<img class="pull-left" class="point=img" src="assets/SVGs/Map SVGs/Company logos/{{point.logo}}"/>
+		<div class="pull-left point-info">{{ point.price }}
 		</div>
-		<div class="col-md-4 pull-right price">{{ point.price }}<br/>
-			<span class="pull-left gas" ng-if="point.id == 1">12 gal</span>
+		<div class="col-md-4 pull-right price">{{ point.distance }} mi
 		</div>
 	</div>
 
 </div>
 <div id="payment-ask" ng-show="payment">
 	<div class="title">Payment for {{payment.name}} <span class="amount">{{payment.price}}</span>?</div>
-	<img class="activeee" src="assets/SVGs/Buttons:Switches/Confirm.svg"/>
+	<img class="activeee" src="assets/SVGs/Buttons:Switches/Confirm.svg" ng-click="pay()"/>
 	<img src="assets/SVGs/Buttons:Switches/Decline.svg"/>
 </div>

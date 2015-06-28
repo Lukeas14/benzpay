@@ -8,33 +8,55 @@ var haversine = require('haversine');
 var vehicleUri = "http://172.31.99.3/vehicle";
 var vehicleData = null;
 var vehicleDataInterval = null;
+//var vehicleDataIndex = 600; //Parking
 var vehicleDataIndex = 0;
-var vehicleDataJson = require('./vehicleData.json').responses;
+var vehicleDataJson = require('./vehicleData2.json').responses;
 
 var points = [
 	{
 		id: 1,
+		name: "Shell Gas",
+		logo: "SHell.svg",
+		price: '$39.75',
+		latitude: 37.395347,
+		longitude: -122.028327,
+		mode: 'gas'
+	},
+	{
+		id: 6,
+		name: "Shell Gas",
+		logo: "SHell.svg",
+		price: '$46.12',
+		latitude: 37.391347,
+		longitude: -122.028327,
+		mode: 'gas'
+	},
+	{
+		id: 5,
 		name: "Chevron Gas",
 		logo: "Chevron Gas Logo.svg",
-		price: '$42.12',
-		latitude: 37.8074180278,
-		longitude:-122.415678528
+		price: '$34.84',
+		latitude: 37.394026,
+		longitude: -122.028820,
+		mode: 'gas'
 	},
 	{
 		id: 2,
 		name: "Starbucks Order",
 		logo: "Starbucks Coffee Logo.svg",
 		price: '$7.45',
-		latitude: 37.8074734444,
-		longitude:-122.414194583
+		latitude: 37.394026,
+		longitude: -122.028820,
+		mode: 'events'
 	},
 	{
 		id: 3,
 		name: "2hr Parking",
 		logo: "2hr Parking Logo.svg",
 		price: '$3.00',
-		latitude: 37.8077966389,
-		longitude:-122.411646167
+		latitude: 37.394026,
+		longitude: -122.028820,
+		mode: 'parking'
 	}
 ];
 
@@ -52,7 +74,7 @@ if ( ! serialPortFilenames ) {
 	process.exit( 1 )
 }
 var serialPortFilename = serialPortFilenames[ 0 ]
-var serialPortFilename = "/dev/tty.usbserial-FTGQJ7IM"
+var serialPortFilename = "/dev/tty.usbserial-FTGQEZB8"
 
 app.use('/public', express.static('public'));
 
@@ -87,7 +109,7 @@ setInterval(function(){
 	vehicleDataIndex++;
 	vehicleData = vehicleDataJson[vehicleDataIndex];
 
-}, 300);
+}, 500);
 
 
 var wss = new WebSocketServer({ port: 3002 });
@@ -95,18 +117,30 @@ console.log("Websocket server opened at port: 3002");
 wss.on('connection', function connection(ws) {
 	console.log("Connection received on websocket server.");
 
+	var mode = 'gas';
+
+	ws.on('message', function(message){
+		console.log('MESSAGE', message);
+		mode = message;
+	});
 
 	//Send vehicleData
 	vehicleDataInterval = setInterval(function () {
 
+		vehicleData.points = [];
+
 		for(point in points){
+
 			points[point].distance = parseFloat(haversine({
 				latitude: vehicleData.GPS_Latitude,
 				longitude: vehicleData.GPS_Longitude
 			}, points[point])).toFixed(2);
 		}
 
-		vehicleData.points = points;
+		for(point in points){
+			if(points[point].mode != mode) continue;
+			vehicleData.points.push(points[point]);
+		}
 		//console.log(vehicleData);
 		//console.log('wtf', JSON.stringify(vehicleData));
 		try {
@@ -135,7 +169,7 @@ wss2.on('connection', function connection(ws) {
 	try {
 		var SerialPort = serialport.SerialPort;
 
-		var sp = new SerialPort("/dev/tty.usbserial-FTGQJ7IM", {
+		var sp = new SerialPort("/dev/tty.usbserial-FTGQEZB8", {
 			parser: serialport.parsers.readline("\n"),
 			baudrate: 115200,
 			databits: 8
@@ -186,12 +220,16 @@ wss2.on('connection', function connection(ws) {
 					case 'swipeLeft':
 						// this often = 2 when only one touch occurred
 						arg = inArgs[ 'touches' ]
+						command = 'swipeleft'
+						break;
 					case 'pushLeftPressed':
 						command = 'left'
 						break;
 					case 'swipeRight':
 						// this often = 2 when only one touch occurred
 						arg = inArgs[ 'touches' ]
+						command = 'swiperight'
+						break;
 					case 'pushRightPressed':
 						command = 'right'
 						break;

@@ -30569,18 +30569,23 @@ var chevronMarker = '<svg version="1.1" id="Layer_1" xmlns:sketch="http://www.bo
 angular.module('benzpay', ['ngRoute'])
 	.controller('MainController', function($rootScope, $scope, $route, $location, $routeParams){
 		$scope.activeTab;
+		$rootScope.mode = 'gas';
 		$rootScope.payment = null;
 		$scope.active = true;
 		$rootScope.bal = {
 			usd: 47.19,
 			btc: 20.00
 		}
-		$scope.time = moment().format("H:mm A");
+		$scope.time = moment().format("h:mm A");
 		$scope.$route = $route;
 		console.log('main controller');
 		$scope.bitcoinAddress = "1LvFcvjYioPtgzkrtw78Wzaik2eC3kiwDX"
 		$scope.bitcoinQR_URL = "http://chart.apis.google.com/chart?chf=a,s,000000|bg,s,FFFFFF&chs=150x150&chld=M|4&cht=qr&chl=1LvFcvjYioPtgzkrtw78Wzaik2eC3kiwDX&choe=UTF-8"
-		$scope.bitcoinBalance = 0.20
+		$scope.bitcoinBalance = 0.20;
+
+		$scope.pay = function(){
+			$rootScope.payment = null;
+		}
 
 			// Place code implementing the functionality of app
 			// here, for example to manipulate the map view.
@@ -30601,6 +30606,28 @@ angular.module('benzpay', ['ngRoute'])
 
 				console.log('command', command.command);
 
+				if(command.command==="cw"){
+					console.log("CW");
+				}
+
+				if(command.command==="swiperight"){
+					switch($rootScope.mode) {
+						case "gas":
+							$rootScope.mode = "events";
+							break;
+						case "events":
+							$rootScope.mode = "parking";
+							break;
+						case "parking":
+							$rootScope.mode = "gas";
+							break;
+					}
+					return;
+				}
+
+				if(command.command==="swipeleft"){
+
+				}
 
 				if(command.command==="right"){
 
@@ -30733,9 +30760,36 @@ angular.module('benzpay', ['ngRoute'])
 		};
 		var markersSet = false;
 
+		$scope.modeTitles = {
+			'parking': 'Parking Suggestions',
+			'gas': 'Gas Suggestions (13 gal)',
+			'events': 'Event Suggestions'
+		};
+
+		$scope.newMode = function(newMode){
+			$rootScope.mode = newMode;
+		};
+
 		console.log('set up map');
-		nokia.Settings.set("app_id", "evalLunne37Ciwejfare7");
-		nokia.Settings.set("app_code", "RrEcE54Hc6U2VGp70LqoQQ");
+		/*var platform = new H.service.Platform({
+			'app_id': 'zD2W4hIUYzZuzcZrgPBh',
+			'app_code': '3YUfwUGykLUKFKbsg6l8Kg'
+		});
+		var defaultLayers = platform.createDefaultLayers();
+		var maptypes = platform.createDefaultLayers();
+		var map = new H.Map(
+			document.getElementById('map-container'),
+			maptypes.normal.map,
+			{
+				zoom: 17,
+				center: {lat:37.8085741667, lng:-122.415423667}
+			});*/
+
+		nokia.Settings.set("app_id", "zD2W4hIUYzZuzcZrgPBh");
+		nokia.Settings.set("app_code", "3YUfwUGykLUKFKbsg6l8Kg");
+
+		//nokia.Settings.set("app_id", "evalLunne37Ciwejfare7");
+		//nokia.Settings.set("app_code", "RrEcE54Hc6U2VGp70LqoQQ");
 		var map = new nokia.maps.map.Display(
 			document.getElementById("map-container"), {
 				components: [
@@ -30745,12 +30799,28 @@ angular.module('benzpay', ['ngRoute'])
 				],
 				// Zoom level for the map
 				zoomLevel: 17,
+				//zoomLevel:14,
 				// Map center coordinates
 				center: [37.8085741667, -122.415423667],
 				baseMapType: nokia.maps.map.Display.SMARTMAP
 			}
 		);
 		map.addListener("displayready", function() {
+
+
+
+			var car = new nokia.maps.map.Marker(
+				new nokia.maps.geo.Coordinate(37.8085741667, -122.415423667), {
+					title: 'car',
+					visibility: true,
+					icon: "assets/Roundmarkerorange.svg",
+					anchor: new nokia.maps.util.Point(32, 32)
+				}
+			);
+			map.objects.add(car);
+
+
+			console.log(car, nokia);
 
 			/*
 			var marker = new nokia.maps.map.Marker(
@@ -30778,17 +30848,25 @@ angular.module('benzpay', ['ngRoute'])
 			// connection.onmessage = function (message) {
 			// 	var vehicleData = JSON.parse(message.data);
 
+
 			window.WebSocket = window.WebSocket || window.MozWebSocket;
 			var connection = new WebSocket('ws://127.0.0.1:3002');
 			connection.onopen = function () {
 				console.log('websocket open');
+
+				$rootScope.$watch('mode', function(newVal, oldVal){
+					console.log('send new mode:', newVal);
+					connection.send(newVal);
+				});
+
+
 			};
 			connection.onerror = function (error) {
 				console.log('websocket error', error);
 			};
 			connection.onmessage = function (message) {
 				var vehicleData = JSON.parse(message.data);
-				//console.log(vehicleData.GPS_Latitude, vehicleData.GPS_Longitude);
+				//console.log(vehicleData, vehicleData.GPS_Latitude, vehicleData.GPS_Longitude);
 
 				if (!markersSet) {
 					for (var i = 0; i < vehicleData.points.length; i++) {
@@ -30817,9 +30895,23 @@ angular.module('benzpay', ['ngRoute'])
 							btc: 9.53
 						}
 					}
-					console.log('distance', vehicleData.points[i].distance);
+					//console.log('distance', vehicleData.points[i].distance);
 
 				}
+
+				/*map.objects.remove(car);
+				car = new nokia.maps.map.Marker(
+					new nokia.maps.geo.Coordinate(vehicleData.GPS_Latitude, vehicleData.GPS_Longitude), {
+						title: 'car',
+						visibility: true,
+						icon: "assets/Roundmarkerorange.svg",
+						anchor: new nokia.maps.util.Point(32, 32)
+					}
+				);
+				map.objects.add(car);*/
+				//var carPosition = new nokia.maps.util.Point(vehicleData.GPS_Latitude, vehicleData.GPS_Longitude);
+				//car.setPosition(carPosition);
+				car.set("coordinate", new nokia.maps.geo.Coordinate(vehicleData.GPS_Latitude, vehicleData.GPS_Longitude));
 
 				$scope.points = vehicleData.points;
 				$scope.$apply();

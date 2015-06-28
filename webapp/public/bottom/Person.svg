@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="27px" height="31px" viewBox="0 0 27 31" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>Person</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Map---Events" sketch:type="MSArtboardGroup" transform="translate(-307.000000, -626.000000)" fill="#FFFFFF">
+            <g id="Nav" sketch:type="MSLayerGroup" transform="translate(0.000000, 611.000000)">
+                <g id="Nav-Icons" transform="translate(45.000000, 13.000000)" sketch:type="MSShapeGroup">
+                    <path d="M269.582002,8.92048636 C269.582002,7.25687102 270.172193,5.80765151 271.353056,4.57330964 C272.587398,3.33896776 274.036618,2.74877697 275.753712,2.74877697 C277.470805,2.74877697 278.920025,3.33896776 280.154367,4.57330964 C281.388709,5.80765151 281.978899,7.25687102 281.978899,8.92048636 C281.978899,10.638062 281.388709,12.0867997 280.154367,13.3211416 C278.920025,14.5554835 277.470805,15.1456743 275.753712,15.1456743 C272.319042,15.1456743 269.582002,12.3551558 269.582002,8.92048636 L269.582002,8.92048636 L269.582002,8.92048636 Z M288.365487,25.879438 L288.365487,32.748777 L262.981019,32.748777 L262.981019,25.879438 C262.981019,21.5322613 268.669977,17.8831959 275.646755,17.8831959 C282.569572,17.8827141 288.365487,21.5322613 288.365487,25.879438 L288.365487,25.879438 L288.365487,25.879438 Z" id="Person"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="20px" height="31px" viewBox="0 0 20 31" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.2 (12043) - http://www.bohemiancoding.com/sketch -->
+    <title>Music</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Map---Events" sketch:type="MSArtboardGroup" transform="translate(-181.000000, -626.000000)" fill="#FFFFFF">
+            <g id="Nav" sketch:type="MSLayerGroup" transform="translate(0.000000, 611.000000)">
+                <g id="Nav-Icons" transform="translate(45.000000, 13.000000)" sketch:type="MSShapeGroup">
+                    <path d="M151.285499,12.3320526 C150.683687,11.5914247 150.220691,10.9896126 149.943059,10.5727497 L149.943059,27.6562331 C149.943059,30.2949796 146.424453,32.748777 142.304035,32.748777 C139.155744,32.748777 136.702362,31.2209723 136.702362,29.0452221 C136.702362,26.5914247 140.220968,23.9988116 144.341386,23.9988116 C145.174696,23.9988116 146.054555,24.1376274 146.933999,24.3691255 L146.933999,2.74877697 L149.943475,2.74877697 C149.943475,4.04508353 150.776785,5.10989193 152.443405,6.91532819 C154.711838,9.46180792 155.915462,11.1284284 155.915462,13.5822258 C155.915462,15.1561639 155.359783,16.8227843 154.202293,18.5359538 L153.78543,18.5359538 C153.78543,15.6191602 152.952119,14.2301712 151.285499,12.3320526 L151.285499,12.3320526 L151.285499,12.3320526 Z" id="Music"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

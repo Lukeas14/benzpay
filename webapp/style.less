@@ -8,7 +8,6 @@ html {
 body {
 	height:100%;
 	/* Margin bottom by footer height */
-	margin-bottom: 60px;
 	background: #4d4d4d;
 }
 .header {
@@ -16,24 +15,27 @@ body {
 	top:0;
 	width:100%;
 	height:60px;
-	background-color:#1C1C1C;
+	background: rgba(28, 28, 28, 0.5);
+	z-index:9999;
 
 	.benz{
 		height:50px;
 		margin-top:-195px;
+		opacity:0;
 	}
 
 	.logo{
 		width:338px;
-		margin-top:-84px;
-		margin-left:210px;
-		opacity:0;
+		height:209px;
+		margin-top:-77px;
+		margin-left:200px;
+		opacity:0.8;
 	}
 
 	.right-head{
-		color:#CCC;
+		color:#FFF;
 		font-size:1.2em;
-		font-weight:500;
+		font-weight:300;
 		padding:17px 20px;
 		opacity:0.7;
 	}
@@ -46,6 +48,7 @@ body {
 	/* Set the fixed height of the footer here */
 	height: 60px;
 	background-color: #1C1C1C;
+	background: rgba(28, 28, 28, 0.5);
 
 	ul{
 		list-style:none;
@@ -56,9 +59,10 @@ body {
 			float:left;
 			width:12.5%;
 			text-align:center;
+			height:60px;
 
 			&.active{
-				background:#4D4D4D;
+				background:rgba(28, 28, 28, 0.3);
 			}
 
 			a{
@@ -81,8 +85,6 @@ body {
 
 	.content{
 		height:100%;
-		margin-top:60px;
-		margin-bottom:60px;
 		color:#EEE;
 	}
 }
@@ -94,11 +96,50 @@ body {
 	position:absolute;
 	z-index:9999;
 	width:300px;
-	height:100%;
-	top:60px;
+	height:auto;
+	top:80px;
 	right:0px;
-	background: rgba(0, 0, 0, 0.5);
+	background: rgba(28, 28, 28, 0.6);
 	color:#DDD;
+
+	.submenu{
+		width:100%;
+		overflow:hidden;
+		padding:10px 0;
+		background: rgba(28, 28, 28, 0.6);
+
+		.sub{
+			height:35px;
+			width:33%;
+			background-position:top center;
+			float:left;
+			text-align:center;
+			background-repeat:no-repeat;
+			opacity:0.5;
+
+			&#parking{
+				background-image:url("sub/Park.svg");
+				background-position:top right;
+			}
+			&#gas{
+				background-image:url("sub/Gas.svg");
+			}
+			&#events{
+				background-image:url("sub/Ticketwhite.svg");
+				background-position:top left;
+			}
+
+			&.active{
+				opacity:1;
+			}
+		}
+	}
+
+	.mode-title{
+		text-align:center;
+		font-size:14px;
+		padding:10px 0;
+	}
 
 	.point{
 		width:290px;
@@ -106,16 +147,24 @@ body {
 		padding: 5px;
 		overflow:hidden;
 
+		img{
+			height:40px;
+			width:40px;
+		}
 		background: rgba(0, 0, 0, 0.4);
+		.point-info{
+			font-size:16px;
+			padding-top:10px;
+		}
 
 		p.name{
 			font-size:1.2em;
 			color:#FFF;
 		}
 		.price{
-			font-size:1.5em;
-			font-weight:100;
-			color: #00bb00;
+			padding-top:10px;
+			font-size:16px;
+			color:#FFF;
 		}
 		span.gas{
 			font-size:0.7em;

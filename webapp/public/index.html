@@ -19,26 +19,34 @@
 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 
-	<script src="http://js.api.here.com/v3/3.0/mapsjs-core.js"
+	<script src="http://js.api.here.com/v3/3.0.9.0/mapsjs-core.js"
 			type="text/javascript" charset="utf-8"></script>
-	<script src="http://js.api.here.com/v3/3.0/mapsjs-service.js"
+	<script src="http://js.api.here.com/v3/3.0.9.0/mapsjs-service.js"
 			type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript"
 			src="http://js.api.here.com/se/2.5.4/jsl.js?
 			with=maps,places,directions,positioning">
 	</script>
+	<!--
+	<script src="http://js.api.here.com/v3/3.0/mapsjs-core.js"
+			type="text/javascript" charset="utf-8"></script>
+	<script src="http://js.api.here.com/v3/3.0/mapsjs-service.js"
+			type="text/javascript" charset="utf-8"></script>
+	-->
 </head>
 <body ng-controller="MainController">
 
 <header class="header">
 
 	<img class="benz" src="assets/SVGs/Top Bar SVGs/Mercedes Me/Mercedes blackl background.png"/>
-	<img class="logo" src="assets/logo.svg"/>
+	<img class="logo" src="logowhite.svg"/>
 	<div class="right-head pull-right">
 		{{time}}
+		<!--
 		<img src="assets/SVGs/Top Bar SVGs/Coin.svg"/>
 		<img src="assets/SVGs/Top Bar SVGs/Bluetooth.svg"/>
 		<img src="assets/SVGs/Top Bar SVGs/Battery.svg"/>
+		-->
 	</div>
 </header>
 
@@ -49,14 +57,14 @@
 
 <footer class="footer">
 		<ul>
-			<li ng-class="{active: $route.current.$$route.originalPath === '/home'}"><a href="#/home"><img class="img-responsive" src="assets/SVGs/Home.svg"/></a></li>
-			<li ng-class="{active: $route.current.$$route.originalPath === '/wifi'}"><a href="#/wifi"><img class="img-responsive" src="assets/SVGs/Signal.svg"/></a></li>
-			<li ng-class="{active: $route.current.$$route.originalPath === '/warnings'}"><a href="#/warnings"><img class="img-responsive" src="assets/SVGs/Flag.svg"/></a></li>
-			<li ng-class="{active: $route.current.$$route.originalPath === '/peers'}"><a href="#/peers"><img class="img-responsive" src="assets/SVGs/Peer.svg"/></a></li>
-			<li ng-class="{active: $route.current.$$route.originalPath === '/settings'}"><a href="#/settings"><img class="img-responsive" src="assets/SVGs/Settings.svg"/></a></li>
-			<li ng-class="{active: $route.current.$$route.originalPath === '/pay'}"><a href="#/pay"><img class="img-responsive" src="assets/SVGs/Bitcoincloud.svg"/></a></li>
-			<li ng-class="{active: $route.current.$$route.originalPath === '/parking'}"><a href="#/parking"><img class="img-responsive" src="assets/SVGs/Parking.svg"/></a></li>
-			<li ng-class="{active: $route.current.$$route.originalPath === '/drive'}"><a href="#/drive"><img class="img-responsive" src="assets/SVGs/Tachometer.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/settings'}"><a href="#/settings"><img class="img-responsive" src="bottom/Home.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/wifi'}"><a href="#/wifi"><img class="img-responsive" src="bottom/Music.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/warnings'}"><a href="#/warnings"><img class="img-responsive" src="bottom/Person.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/peers'}"><a href="#/peers"><img class="img-responsive" src="bottom/RPM.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/home'}"><a href="#/home"><img class="img-responsive" src="bottom/Benzpay%20icon.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/pay'}"><a href="#/pay"><img class="img-responsive" src="bottom/Map%20Icon.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/parking'}"><a href="#/parking"><img class="img-responsive" src="bottom/receipt.svg"/></a></li>
+			<li ng-class="{active: $route.current.$$route.originalPath === '/drive'}"><a href="#/drive"><img class="img-responsive" src="bottom/Cog.svg"/></a></li>
 		</ul>
 </footer>
 
