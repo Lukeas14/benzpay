@@ -88,6 +88,13 @@ body {
 		color:#EEE;
 	}
 }
+#car-point{
+	position:absolute;
+	top:50%;
+	left:50%;
+	margin-left:-15px;
+	margin-top:-15px;
+}
 #map-container{
 	width:100%;
 	height:100%;
@@ -146,15 +153,39 @@ body {
 		margin:5px;
 		padding: 5px;
 		overflow:hidden;
+		border:2px solid transparent;
 
 		img{
 			height:40px;
 			width:40px;
+			opacity:0.6;
 		}
+
+
+
+		&.active{
+			border:2px solid #00b700;
+
+			img{
+				opacity:1;
+			}
+		}
+
 		background: rgba(0, 0, 0, 0.4);
 		.point-info{
 			font-size:16px;
-			padding-top:10px;
+			padding-top:5px;
+
+			.name-price{
+				color:#00b700;
+			}
+
+			&.events{
+				padding-top:5px;
+				padding-bottom:5px;
+				font-size:12px;
+			}
+
 		}
 
 		p.name{
@@ -165,6 +196,11 @@ body {
 			padding-top:10px;
 			font-size:16px;
 			color:#FFF;
+
+			&.events{
+				padding-top:5px;
+				font-size:14px;
+			}
 		}
 		span.gas{
 			font-size:0.7em;
@@ -192,7 +228,7 @@ body {
 	border:2px solid gold;
 
 	.title{
-		margin:60px 0 80px 0;
+		margin:60px 0 50px 0;
 		font-size:2em;
 		overflow:hidden;
 		border-bottom:2px solid gold;
@@ -224,6 +260,26 @@ body {
 	.arrow{
 		margin-top:20px;
 	}
+}
+.bribe{
+	width:700px;
+	margin:0 auto;
+	margin-top:130px;
+	padding:10px;
+	font-size:3em;
+	//border:1px solid #00bb00;
+
+	.arrow{
+		margin-top:20px;
+	}
+}
+.bribe-confirm{
+	margin:0 auto;
+	margin-top:20px;
+	border:1px solid #00bb00;
+	background:#333;
+	padding:10px;
+
 }
 .bitaddress{
 	width:700px;

@@ -8,14 +8,24 @@ var haversine = require('haversine');
 var vehicleUri = "http://172.31.99.3/vehicle";
 var vehicleData = null;
 var vehicleDataInterval = null;
-//var vehicleDataIndex = 600; //Parking
-var vehicleDataIndex = 0;
+var vehicleDataIndex = 600; //Event
+//var vehicleDataIndex = 0; //Gas
+//var vehicleDataIndex = 800; //Parking
 var vehicleDataJson = require('./vehicleData2.json').responses;
 
 var points = [
 	{
+		id: 5,
+		name: "Chevron Gas<br/>",
+		logo: "Chevron Gas Logo.svg",
+		price: '$34.84',
+		latitude: 37.394026,
+		longitude: -122.028820,
+		mode: 'gas'
+	},
+	{
 		id: 1,
-		name: "Shell Gas",
+		name: "Shell Gas<br/>",
 		logo: "SHell.svg",
 		price: '$39.75',
 		latitude: 37.395347,
@@ -24,7 +34,7 @@ var points = [
 	},
 	{
 		id: 6,
-		name: "Shell Gas",
+		name: "Shell Gas<br/>",
 		logo: "SHell.svg",
 		price: '$46.12',
 		latitude: 37.391347,
@@ -32,32 +42,59 @@ var points = [
 		mode: 'gas'
 	},
 	{
-		id: 5,
-		name: "Chevron Gas",
-		logo: "Chevron Gas Logo.svg",
-		price: '$34.84',
-		latitude: 37.394026,
-		longitude: -122.028820,
-		mode: 'gas'
+		id: 24,
+		name: "49ers vs. Raiders<br/>5:05pm Levi Stadium",
+		logo: "Redmarker2.svg",
+		price: '$103.12',
+		latitude: 37.404189,
+		longitude: -121.970496,
+		mode: 'events'
 	},
 	{
-		id: 2,
-		name: "Starbucks Order",
-		logo: "Starbucks Coffee Logo.svg",
-		price: '$7.45',
-		latitude: 37.394026,
-		longitude: -122.028820,
+		id: 26,
+		name: "The Book of Mormon<br/>7:00pm SAP Center",
+		logo: "Redmarker2.svg",
+		price: '$47.45',
+		latitude: 37.332720,
+		longitude: -121.901087,
+		mode: 'events'
+	},
+	{
+		id: 29,
+		name: "WWDC<br/>All Day @ Apple Inc.",
+		logo: "Redmarker2.svg",
+		price: '$245.00',
+		latitude: 37.331363,
+		longitude: -122.029755,
 		mode: 'events'
 	},
 	{
 		id: 3,
-		name: "2hr Parking",
+		name: "Flat Rate Garage<br/>",
+		logo: "Parking Blue.png",
+		price: '$25.00',
+		latitude: 37.351937,
+		longitude: -121.907299,
+		mode: 'parking'
+	},
+	{
+		id: 3,
+		name: "Street Parking 1hr<br/>",
+		logo: "2hr Parking Logo.svg",
+		price: '$1.50',
+		latitude: 37.350600,
+		longitude: -121.920873,
+		mode: 'parking'
+	},
+	{
+		id: 3,
+		name: "Street Parking 2hr<br/>",
 		logo: "2hr Parking Logo.svg",
 		price: '$3.00',
-		latitude: 37.394026,
-		longitude: -122.028820,
+		latitude: 37.344126,
+		longitude: -121.912966,
 		mode: 'parking'
-	}
+	},
 ];
 
 var serialport = require( "serialport" );
@@ -117,7 +154,7 @@ console.log("Websocket server opened at port: 3002");
 wss.on('connection', function connection(ws) {
 	console.log("Connection received on websocket server.");
 
-	var mode = 'gas';
+	var mode = 'events';
 
 	ws.on('message', function(message){
 		console.log('MESSAGE', message);

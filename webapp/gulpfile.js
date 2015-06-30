@@ -11,6 +11,7 @@ var gulp = require('gulp'),
 		lessFiles: './style.less',
 		jsFiles: [
 			'./node_modules/angular/angular.js',
+			'./node_modules/angular-sanitize/angular-sanitize.js',
 			'./node_modules/angular-route/angular-route.js',
 			'./node_modules/moment/moment.js',
 			'./js/app.js'

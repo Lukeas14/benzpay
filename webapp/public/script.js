@@ -26423,6 +26423,690 @@ var minlengthDirective = function() {
 
 !window.angular.$$csp() && window.angular.element(document).find('head').prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}</style>');
 /**
+ * @license AngularJS v1.4.1
+ * (c) 2010-2015 Google, Inc. http://angularjs.org
+ * License: MIT
+ */
+(function(window, angular, undefined) {'use strict';
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *     Any commits to this file should be reviewed with security in mind.  *
+ *   Changes to this file can potentially create security vulnerabilities. *
+ *          An approval from 2 Core members with history of modifying      *
+ *                         this file is required.                          *
+ *                                                                         *
+ *  Does the change somehow allow for arbitrary javascript to be executed? *
+ *    Or allows for someone to change the prototype of built-in objects?   *
+ *     Or gives undesired access to variables likes document or window?    *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+var $sanitizeMinErr = angular.$$minErr('$sanitize');
+
+/**
+ * @ngdoc module
+ * @name ngSanitize
+ * @description
+ *
+ * # ngSanitize
+ *
+ * The `ngSanitize` module provides functionality to sanitize HTML.
+ *
+ *
+ * <div doc-module-components="ngSanitize"></div>
+ *
+ * See {@link ngSanitize.$sanitize `$sanitize`} for usage.
+ */
+
+/*
+ * HTML Parser By Misko Hevery (misko@hevery.com)
+ * based on:  HTML Parser By John Resig (ejohn.org)
+ * Original code by Erik Arvidsson, Mozilla Public License
+ * http://erik.eae.net/simplehtmlparser/simplehtmlparser.js
+ *
+ * // Use like so:
+ * htmlParser(htmlString, {
+ *     start: function(tag, attrs, unary) {},
+ *     end: function(tag) {},
+ *     chars: function(text) {},
+ *     comment: function(text) {}
+ * });
+ *
+ */
+
+
+/**
+ * @ngdoc service
+ * @name $sanitize
+ * @kind function
+ *
+ * @description
+ *   The input is sanitized by parsing the HTML into tokens. All safe tokens (from a whitelist) are
+ *   then serialized back to properly escaped html string. This means that no unsafe input can make
+ *   it into the returned string, however, since our parser is more strict than a typical browser
+ *   parser, it's possible that some obscure input, which would be recognized as valid HTML by a
+ *   browser, won't make it through the sanitizer. The input may also contain SVG markup.
+ *   The whitelist is configured using the functions `aHrefSanitizationWhitelist` and
+ *   `imgSrcSanitizationWhitelist` of {@link ng.$compileProvider `$compileProvider`}.
+ *
+ * @param {string} html HTML input.
+ * @returns {string} Sanitized HTML.
+ *
+ * @example
+   <example module="sanitizeExample" deps="angular-sanitize.js">
+   <file name="index.html">
+     <script>
+         angular.module('sanitizeExample', ['ngSanitize'])
+           .controller('ExampleController', ['$scope', '$sce', function($scope, $sce) {
+             $scope.snippet =
+               '<p style="color:blue">an html\n' +
+               '<em onmouseover="this.textContent=\'PWN3D!\'">click here</em>\n' +
+               'snippet</p>';
+             $scope.deliberatelyTrustDangerousSnippet = function() {
+               return $sce.trustAsHtml($scope.snippet);
+             };
+           }]);
+     </script>
+     <div ng-controller="ExampleController">
+        Snippet: <textarea ng-model="snippet" cols="60" rows="3"></textarea>
+       <table>
+         <tr>
+           <td>Directive</td>
+           <td>How</td>
+           <td>Source</td>
+           <td>Rendered</td>
+         </tr>
+         <tr id="bind-html-with-sanitize">
+           <td>ng-bind-html</td>
+           <td>Automatically uses $sanitize</td>
+           <td><pre>&lt;div ng-bind-html="snippet"&gt;<br/>&lt;/div&gt;</pre></td>
+           <td><div ng-bind-html="snippet"></div></td>
+         </tr>
+         <tr id="bind-html-with-trust">
+           <td>ng-bind-html</td>
+           <td>Bypass $sanitize by explicitly trusting the dangerous value</td>
+           <td>
+           <pre>&lt;div ng-bind-html="deliberatelyTrustDangerousSnippet()"&gt;
+&lt;/div&gt;</pre>
+           </td>
+           <td><div ng-bind-html="deliberatelyTrustDangerousSnippet()"></div></td>
+         </tr>
+         <tr id="bind-default">
+           <td>ng-bind</td>
+           <td>Automatically escapes</td>
+           <td><pre>&lt;div ng-bind="snippet"&gt;<br/>&lt;/div&gt;</pre></td>
+           <td><div ng-bind="snippet"></div></td>
+         </tr>
+       </table>
+       </div>
+   </file>
+   <file name="protractor.js" type="protractor">
+     it('should sanitize the html snippet by default', function() {
+       expect(element(by.css('#bind-html-with-sanitize div')).getInnerHtml()).
+         toBe('<p>an html\n<em>click here</em>\nsnippet</p>');
+     });
+
+     it('should inline raw snippet if bound to a trusted value', function() {
+       expect(element(by.css('#bind-html-with-trust div')).getInnerHtml()).
+         toBe("<p style=\"color:blue\">an html\n" +
+              "<em onmouseover=\"this.textContent='PWN3D!'\">click here</em>\n" +
+              "snippet</p>");
+     });
+
+     it('should escape snippet without any filter', function() {
+       expect(element(by.css('#bind-default div')).getInnerHtml()).
+         toBe("&lt;p style=\"color:blue\"&gt;an html\n" +
+              "&lt;em onmouseover=\"this.textContent='PWN3D!'\"&gt;click here&lt;/em&gt;\n" +
+              "snippet&lt;/p&gt;");
+     });
+
+     it('should update', function() {
+       element(by.model('snippet')).clear();
+       element(by.model('snippet')).sendKeys('new <b onclick="alert(1)">text</b>');
+       expect(element(by.css('#bind-html-with-sanitize div')).getInnerHtml()).
+         toBe('new <b>text</b>');
+       expect(element(by.css('#bind-html-with-trust div')).getInnerHtml()).toBe(
+         'new <b onclick="alert(1)">text</b>');
+       expect(element(by.css('#bind-default div')).getInnerHtml()).toBe(
+         "new &lt;b onclick=\"alert(1)\"&gt;text&lt;/b&gt;");
+     });
+   </file>
+   </example>
+ */
+function $SanitizeProvider() {
+  this.$get = ['$$sanitizeUri', function($$sanitizeUri) {
+    return function(html) {
+      var buf = [];
+      htmlParser(html, htmlSanitizeWriter(buf, function(uri, isImage) {
+        return !/^unsafe/.test($$sanitizeUri(uri, isImage));
+      }));
+      return buf.join('');
+    };
+  }];
+}
+
+function sanitizeText(chars) {
+  var buf = [];
+  var writer = htmlSanitizeWriter(buf, angular.noop);
+  writer.chars(chars);
+  return buf.join('');
+}
+
+
+// Regular Expressions for parsing tags and attributes
+var START_TAG_REGEXP =
+       /^<((?:[a-zA-Z])[\w:-]*)((?:\s+[\w:-]+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)\s*(>?)/,
+  END_TAG_REGEXP = /^<\/\s*([\w:-]+)[^>]*>/,
+  ATTR_REGEXP = /([\w:-]+)(?:\s*=\s*(?:(?:"((?:[^"])*)")|(?:'((?:[^'])*)')|([^>\s]+)))?/g,
+  BEGIN_TAG_REGEXP = /^</,
+  BEGING_END_TAGE_REGEXP = /^<\//,
+  COMMENT_REGEXP = /<!--(.*?)-->/g,
+  DOCTYPE_REGEXP = /<!DOCTYPE([^>]*?)>/i,
+  CDATA_REGEXP = /<!\[CDATA\[(.*?)]]>/g,
+  SURROGATE_PAIR_REGEXP = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g,
+  // Match everything outside of normal chars and " (quote character)
+  NON_ALPHANUMERIC_REGEXP = /([^\#-~| |!])/g;
+
+
+// Good source of info about elements and attributes
+// http://dev.w3.org/html5/spec/Overview.html#semantics
+// http://simon.html5.org/html-elements
+
+// Safe Void Elements - HTML5
+// http://dev.w3.org/html5/spec/Overview.html#void-elements
+var voidElements = makeMap("area,br,col,hr,img,wbr");
+
+// Elements that you can, intentionally, leave open (and which close themselves)
+// http://dev.w3.org/html5/spec/Overview.html#optional-tags
+var optionalEndTagBlockElements = makeMap("colgroup,dd,dt,li,p,tbody,td,tfoot,th,thead,tr"),
+    optionalEndTagInlineElements = makeMap("rp,rt"),
+    optionalEndTagElements = angular.extend({},
+                                            optionalEndTagInlineElements,
+                                            optionalEndTagBlockElements);
+
+// Safe Block Elements - HTML5
+var blockElements = angular.extend({}, optionalEndTagBlockElements, makeMap("address,article," +
+        "aside,blockquote,caption,center,del,dir,div,dl,figure,figcaption,footer,h1,h2,h3,h4,h5," +
+        "h6,header,hgroup,hr,ins,map,menu,nav,ol,pre,script,section,table,ul"));
+
+// Inline Elements - HTML5
+var inlineElements = angular.extend({}, optionalEndTagInlineElements, makeMap("a,abbr,acronym,b," +
+        "bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,ins,kbd,label,map,mark,q,ruby,rp,rt,s," +
+        "samp,small,span,strike,strong,sub,sup,time,tt,u,var"));
+
+// SVG Elements
+// https://wiki.whatwg.org/wiki/Sanitization_rules#svg_Elements
+// Note: the elements animate,animateColor,animateMotion,animateTransform,set are intentionally omitted.
+// They can potentially allow for arbitrary javascript to be executed. See #11290
+var svgElements = makeMap("circle,defs,desc,ellipse,font-face,font-face-name,font-face-src,g,glyph," +
+        "hkern,image,linearGradient,line,marker,metadata,missing-glyph,mpath,path,polygon,polyline," +
+        "radialGradient,rect,stop,svg,switch,text,title,tspan,use");
+
+// Special Elements (can contain anything)
+var specialElements = makeMap("script,style");
+
+var validElements = angular.extend({},
+                                   voidElements,
+                                   blockElements,
+                                   inlineElements,
+                                   optionalEndTagElements,
+                                   svgElements);
+
+//Attributes that have href and hence need to be sanitized
+var uriAttrs = makeMap("background,cite,href,longdesc,src,usemap,xlink:href");
+
+var htmlAttrs = makeMap('abbr,align,alt,axis,bgcolor,border,cellpadding,cellspacing,class,clear,' +
+    'color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,' +
+    'ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,' +
+    'scope,scrolling,shape,size,span,start,summary,tabindex,target,title,type,' +
+    'valign,value,vspace,width');
+
+// SVG attributes (without "id" and "name" attributes)
+// https://wiki.whatwg.org/wiki/Sanitization_rules#svg_Attributes
+var svgAttrs = makeMap('accent-height,accumulate,additive,alphabetic,arabic-form,ascent,' +
+    'baseProfile,bbox,begin,by,calcMode,cap-height,class,color,color-rendering,content,' +
+    'cx,cy,d,dx,dy,descent,display,dur,end,fill,fill-rule,font-family,font-size,font-stretch,' +
+    'font-style,font-variant,font-weight,from,fx,fy,g1,g2,glyph-name,gradientUnits,hanging,' +
+    'height,horiz-adv-x,horiz-origin-x,ideographic,k,keyPoints,keySplines,keyTimes,lang,' +
+    'marker-end,marker-mid,marker-start,markerHeight,markerUnits,markerWidth,mathematical,' +
+    'max,min,offset,opacity,orient,origin,overline-position,overline-thickness,panose-1,' +
+    'path,pathLength,points,preserveAspectRatio,r,refX,refY,repeatCount,repeatDur,' +
+    'requiredExtensions,requiredFeatures,restart,rotate,rx,ry,slope,stemh,stemv,stop-color,' +
+    'stop-opacity,strikethrough-position,strikethrough-thickness,stroke,stroke-dasharray,' +
+    'stroke-dashoffset,stroke-linecap,stroke-linejoin,stroke-miterlimit,stroke-opacity,' +
+    'stroke-width,systemLanguage,target,text-anchor,to,transform,type,u1,u2,underline-position,' +
+    'underline-thickness,unicode,unicode-range,units-per-em,values,version,viewBox,visibility,' +
+    'width,widths,x,x-height,x1,x2,xlink:actuate,xlink:arcrole,xlink:role,xlink:show,xlink:title,' +
+    'xlink:type,xml:base,xml:lang,xml:space,xmlns,xmlns:xlink,y,y1,y2,zoomAndPan', true);
+
+var validAttrs = angular.extend({},
+                                uriAttrs,
+                                svgAttrs,
+                                htmlAttrs);
+
+function makeMap(str, lowercaseKeys) {
+  var obj = {}, items = str.split(','), i;
+  for (i = 0; i < items.length; i++) {
+    obj[lowercaseKeys ? angular.lowercase(items[i]) : items[i]] = true;
+  }
+  return obj;
+}
+
+
+/**
+ * @example
+ * htmlParser(htmlString, {
+ *     start: function(tag, attrs, unary) {},
+ *     end: function(tag) {},
+ *     chars: function(text) {},
+ *     comment: function(text) {}
+ * });
+ *
+ * @param {string} html string
+ * @param {object} handler
+ */
+function htmlParser(html, handler) {
+  if (typeof html !== 'string') {
+    if (html === null || typeof html === 'undefined') {
+      html = '';
+    } else {
+      html = '' + html;
+    }
+  }
+  var index, chars, match, stack = [], last = html, text;
+  stack.last = function() { return stack[stack.length - 1]; };
+
+  while (html) {
+    text = '';
+    chars = true;
+
+    // Make sure we're not in a script or style element
+    if (!stack.last() || !specialElements[stack.last()]) {
+
+      // Comment
+      if (html.indexOf("<!--") === 0) {
+        // comments containing -- are not allowed unless they terminate the comment
+        index = html.indexOf("--", 4);
+
+        if (index >= 0 && html.lastIndexOf("-->", index) === index) {
+          if (handler.comment) handler.comment(html.substring(4, index));
+          html = html.substring(index + 3);
+          chars = false;
+        }
+      // DOCTYPE
+      } else if (DOCTYPE_REGEXP.test(html)) {
+        match = html.match(DOCTYPE_REGEXP);
+
+        if (match) {
+          html = html.replace(match[0], '');
+          chars = false;
+        }
+      // end tag
+      } else if (BEGING_END_TAGE_REGEXP.test(html)) {
+        match = html.match(END_TAG_REGEXP);
+
+        if (match) {
+          html = html.substring(match[0].length);
+          match[0].replace(END_TAG_REGEXP, parseEndTag);
+          chars = false;
+        }
+
+      // start tag
+      } else if (BEGIN_TAG_REGEXP.test(html)) {
+        match = html.match(START_TAG_REGEXP);
+
+        if (match) {
+          // We only have a valid start-tag if there is a '>'.
+          if (match[4]) {
+            html = html.substring(match[0].length);
+            match[0].replace(START_TAG_REGEXP, parseStartTag);
+          }
+          chars = false;
+        } else {
+          // no ending tag found --- this piece should be encoded as an entity.
+          text += '<';
+          html = html.substring(1);
+        }
+      }
+
+      if (chars) {
+        index = html.indexOf("<");
+
+        text += index < 0 ? html : html.substring(0, index);
+        html = index < 0 ? "" : html.substring(index);
+
+        if (handler.chars) handler.chars(decodeEntities(text));
+      }
+
+    } else {
+      // IE versions 9 and 10 do not understand the regex '[^]', so using a workaround with [\W\w].
+      html = html.replace(new RegExp("([\\W\\w]*)<\\s*\\/\\s*" + stack.last() + "[^>]*>", 'i'),
+        function(all, text) {
+          text = text.replace(COMMENT_REGEXP, "$1").replace(CDATA_REGEXP, "$1");
+
+          if (handler.chars) handler.chars(decodeEntities(text));
+
+          return "";
+      });
+
+      parseEndTag("", stack.last());
+    }
+
+    if (html == last) {
+      throw $sanitizeMinErr('badparse', "The sanitizer was unable to parse the following block " +
+                                        "of html: {0}", html);
+    }
+    last = html;
+  }
+
+  // Clean up any remaining tags
+  parseEndTag();
+
+  function parseStartTag(tag, tagName, rest, unary) {
+    tagName = angular.lowercase(tagName);
+    if (blockElements[tagName]) {
+      while (stack.last() && inlineElements[stack.last()]) {
+        parseEndTag("", stack.last());
+      }
+    }
+
+    if (optionalEndTagElements[tagName] && stack.last() == tagName) {
+      parseEndTag("", tagName);
+    }
+
+    unary = voidElements[tagName] || !!unary;
+
+    if (!unary) {
+      stack.push(tagName);
+    }
+
+    var attrs = {};
+
+    rest.replace(ATTR_REGEXP,
+      function(match, name, doubleQuotedValue, singleQuotedValue, unquotedValue) {
+        var value = doubleQuotedValue
+          || singleQuotedValue
+          || unquotedValue
+          || '';
+
+        attrs[name] = decodeEntities(value);
+    });
+    if (handler.start) handler.start(tagName, attrs, unary);
+  }
+
+  function parseEndTag(tag, tagName) {
+    var pos = 0, i;
+    tagName = angular.lowercase(tagName);
+    if (tagName) {
+      // Find the closest opened tag of the same type
+      for (pos = stack.length - 1; pos >= 0; pos--) {
+        if (stack[pos] == tagName) break;
+      }
+    }
+
+    if (pos >= 0) {
+      // Close all the open elements, up the stack
+      for (i = stack.length - 1; i >= pos; i--)
+        if (handler.end) handler.end(stack[i]);
+
+      // Remove the open elements from the stack
+      stack.length = pos;
+    }
+  }
+}
+
+var hiddenPre=document.createElement("pre");
+/**
+ * decodes all entities into regular string
+ * @param value
+ * @returns {string} A string with decoded entities.
+ */
+function decodeEntities(value) {
+  if (!value) { return ''; }
+
+  hiddenPre.innerHTML = value.replace(/</g,"&lt;");
+  // innerText depends on styling as it doesn't display hidden elements.
+  // Therefore, it's better to use textContent not to cause unnecessary reflows.
+  return hiddenPre.textContent;
+}
+
+/**
+ * Escapes all potentially dangerous characters, so that the
+ * resulting string can be safely inserted into attribute or
+ * element text.
+ * @param value
+ * @returns {string} escaped text
+ */
+function encodeEntities(value) {
+  return value.
+    replace(/&/g, '&amp;').
+    replace(SURROGATE_PAIR_REGEXP, function(value) {
+      var hi = value.charCodeAt(0);
+      var low = value.charCodeAt(1);
+      return '&#' + (((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000) + ';';
+    }).
+    replace(NON_ALPHANUMERIC_REGEXP, function(value) {
+      return '&#' + value.charCodeAt(0) + ';';
+    }).
+    replace(/</g, '&lt;').
+    replace(/>/g, '&gt;');
+}
+
+/**
+ * create an HTML/XML writer which writes to buffer
+ * @param {Array} buf use buf.jain('') to get out sanitized html string
+ * @returns {object} in the form of {
+ *     start: function(tag, attrs, unary) {},
+ *     end: function(tag) {},
+ *     chars: function(text) {},
+ *     comment: function(text) {}
+ * }
+ */
+function htmlSanitizeWriter(buf, uriValidator) {
+  var ignore = false;
+  var out = angular.bind(buf, buf.push);
+  return {
+    start: function(tag, attrs, unary) {
+      tag = angular.lowercase(tag);
+      if (!ignore && specialElements[tag]) {
+        ignore = tag;
+      }
+      if (!ignore && validElements[tag] === true) {
+        out('<');
+        out(tag);
+        angular.forEach(attrs, function(value, key) {
+          var lkey=angular.lowercase(key);
+          var isImage = (tag === 'img' && lkey === 'src') || (lkey === 'background');
+          if (validAttrs[lkey] === true &&
+            (uriAttrs[lkey] !== true || uriValidator(value, isImage))) {
+            out(' ');
+            out(key);
+            out('="');
+            out(encodeEntities(value));
+            out('"');
+          }
+        });
+        out(unary ? '/>' : '>');
+      }
+    },
+    end: function(tag) {
+        tag = angular.lowercase(tag);
+        if (!ignore && validElements[tag] === true) {
+          out('</');
+          out(tag);
+          out('>');
+        }
+        if (tag == ignore) {
+          ignore = false;
+        }
+      },
+    chars: function(chars) {
+        if (!ignore) {
+          out(encodeEntities(chars));
+        }
+      }
+  };
+}
+
+
+// define ngSanitize module and register $sanitize service
+angular.module('ngSanitize', []).provider('$sanitize', $SanitizeProvider);
+
+/* global sanitizeText: false */
+
+/**
+ * @ngdoc filter
+ * @name linky
+ * @kind function
+ *
+ * @description
+ * Finds links in text input and turns them into html links. Supports http/https/ftp/mailto and
+ * plain email address links.
+ *
+ * Requires the {@link ngSanitize `ngSanitize`} module to be installed.
+ *
+ * @param {string} text Input text.
+ * @param {string} target Window (_blank|_self|_parent|_top) or named frame to open links in.
+ * @returns {string} Html-linkified text.
+ *
+ * @usage
+   <span ng-bind-html="linky_expression | linky"></span>
+ *
+ * @example
+   <example module="linkyExample" deps="angular-sanitize.js">
+     <file name="index.html">
+       <script>
+         angular.module('linkyExample', ['ngSanitize'])
+           .controller('ExampleController', ['$scope', function($scope) {
+             $scope.snippet =
+               'Pretty text with some links:\n'+
+               'http://angularjs.org/,\n'+
+               'mailto:us@somewhere.org,\n'+
+               'another@somewhere.org,\n'+
+               'and one more: ftp://127.0.0.1/.';
+             $scope.snippetWithTarget = 'http://angularjs.org/';
+           }]);
+       </script>
+       <div ng-controller="ExampleController">
+       Snippet: <textarea ng-model="snippet" cols="60" rows="3"></textarea>
+       <table>
+         <tr>
+           <td>Filter</td>
+           <td>Source</td>
+           <td>Rendered</td>
+         </tr>
+         <tr id="linky-filter">
+           <td>linky filter</td>
+           <td>
+             <pre>&lt;div ng-bind-html="snippet | linky"&gt;<br>&lt;/div&gt;</pre>
+           </td>
+           <td>
+             <div ng-bind-html="snippet | linky"></div>
+           </td>
+         </tr>
+         <tr id="linky-target">
+          <td>linky target</td>
+          <td>
+            <pre>&lt;div ng-bind-html="snippetWithTarget | linky:'_blank'"&gt;<br>&lt;/div&gt;</pre>
+          </td>
+          <td>
+            <div ng-bind-html="snippetWithTarget | linky:'_blank'"></div>
+          </td>
+         </tr>
+         <tr id="escaped-html">
+           <td>no filter</td>
+           <td><pre>&lt;div ng-bind="snippet"&gt;<br>&lt;/div&gt;</pre></td>
+           <td><div ng-bind="snippet"></div></td>
+         </tr>
+       </table>
+     </file>
+     <file name="protractor.js" type="protractor">
+       it('should linkify the snippet with urls', function() {
+         expect(element(by.id('linky-filter')).element(by.binding('snippet | linky')).getText()).
+             toBe('Pretty text with some links: http://angularjs.org/, us@somewhere.org, ' +
+                  'another@somewhere.org, and one more: ftp://127.0.0.1/.');
+         expect(element.all(by.css('#linky-filter a')).count()).toEqual(4);
+       });
+
+       it('should not linkify snippet without the linky filter', function() {
+         expect(element(by.id('escaped-html')).element(by.binding('snippet')).getText()).
+             toBe('Pretty text with some links: http://angularjs.org/, mailto:us@somewhere.org, ' +
+                  'another@somewhere.org, and one more: ftp://127.0.0.1/.');
+         expect(element.all(by.css('#escaped-html a')).count()).toEqual(0);
+       });
+
+       it('should update', function() {
+         element(by.model('snippet')).clear();
+         element(by.model('snippet')).sendKeys('new http://link.');
+         expect(element(by.id('linky-filter')).element(by.binding('snippet | linky')).getText()).
+             toBe('new http://link.');
+         expect(element.all(by.css('#linky-filter a')).count()).toEqual(1);
+         expect(element(by.id('escaped-html')).element(by.binding('snippet')).getText())
+             .toBe('new http://link.');
+       });
+
+       it('should work with the target property', function() {
+        expect(element(by.id('linky-target')).
+            element(by.binding("snippetWithTarget | linky:'_blank'")).getText()).
+            toBe('http://angularjs.org/');
+        expect(element(by.css('#linky-target a')).getAttribute('target')).toEqual('_blank');
+       });
+     </file>
+   </example>
+ */
+angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
+  var LINKY_URL_REGEXP =
+        /((ftp|https?):\/\/|(www\.)|(mailto:)?[A-Za-z0-9._%+-]+@)\S*[^\s.;,(){}<>"”’]/i,
+      MAILTO_REGEXP = /^mailto:/i;
+
+  return function(text, target) {
+    if (!text) return text;
+    var match;
+    var raw = text;
+    var html = [];
+    var url;
+    var i;
+    while ((match = raw.match(LINKY_URL_REGEXP))) {
+      // We can not end in these as they are sometimes found at the end of the sentence
+      url = match[0];
+      // if we did not match ftp/http/www/mailto then assume mailto
+      if (!match[2] && !match[4]) {
+        url = (match[3] ? 'http://' : 'mailto:') + url;
+      }
+      i = match.index;
+      addText(raw.substr(0, i));
+      addLink(url, match[0].replace(MAILTO_REGEXP, ''));
+      raw = raw.substring(i + match[0].length);
+    }
+    addText(raw);
+    return $sanitize(html.join(''));
+
+    function addText(text) {
+      if (!text) {
+        return;
+      }
+      html.push(sanitizeText(text));
+    }
+
+    function addLink(url, text) {
+      html.push('<a ');
+      if (angular.isDefined(target)) {
+        html.push('target="',
+                  target,
+                  '" ');
+      }
+      html.push('href="',
+                url.replace(/"/g, '&quot;'),
+                '">');
+      addText(text);
+      html.push('</a>');
+    }
+  };
+}]);
+
+
+})(window, window.angular);
+
+/**
  * @license AngularJS v1.3.16
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
@@ -30566,20 +31250,29 @@ var chevronMarker = '<svg version="1.1" id="Layer_1" xmlns:sketch="http://www.bo
 */
 
 var chevronMarker = '<svg version="1.1" id="Layer_1" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="-440 443 118 123" enable-background="new -440 443 118 123" xml:space="preserve"> <title>Chevron Marker</title> <desc>Created with Sketch.</desc> <g id="Page-1" sketch:type="MSPage"><g id="Map-menu" transform="translate(-496.000000, -384.000000)" sketch:type="MSArtboardGroup"><g id="Chevron-Marker" transform="translate(496.000000, 384.000000)" sketch:type="MSLayerGroup"><g id="Fuel-Marker-green" sketch:type="MSShapeGroup"><g id="_x37_7_Essential_Icons_11_"><path id="Message" fill="#2BAA5E" d="M-325.8,443.2h-110.9c-1.8,0-3.3,1.5-3.3,3.3v74c0,1.8,1.5,3.3,3.3,3.3h24.3c0.1,0,0.2,0.1,0.2,0.2v18.4c0,2.8,3.2,4.2,5.2,2.2l21-20.7c0,0,0.1-0.1,0.1-0.1h60c1.8,0,3.3-1.5,3.3-3.3v-74C-322.5,444.6-324,443.2-325.8,443.2L-325.8,443.2z M-328.6,517.4c0,0.1-0.1,0.2-0.2,0.2h-58.2c-0.8,0-1.5,0.3-2.2,0.9l-16.4,16.1c-0.1,0.1-0.3,0-0.3-0.1v-13.6c0-1.8-1.5-3.3-3.3-3.3h-24.3c-0.1,0-0.2-0.1-0.2-0.2v-65.8c0-0.1,0.1-0.2,0.2-0.2l104.7-2c0.1,0,0.2,0.1,0.2,0.2V517.4L-328.6,517.4z"/></g><path id="Shape" fill="#2BAA5E" d="M-422.9,527.8h-15.3c-0.9,0-1.6,0.8-1.6,1.7v35.5h18.6v-35.5C-421.3,528.6-422.1,527.8-422.9,527.8L-422.9,527.8z M-423.6,541.1h-13.9v-9.9h13.9V541.1L-423.6,541.1z M-414,565.8c-3.8,0-6.1-2.8-6.3-7.8c-0.1-1.9,0.4-4.1,0.8-6.4c0.4-1.7,0.7-3.5,0.9-5.3c0.2-1.8-0.1-2.4-0.3-2.7c-0.3-0.4-1.3-0.4-2.2-0.4h-0.5v-2.4h0.5c1.3,0,2.8,0,3.8,1.2c0.8,0.9,1,2.4,0.8,4.5c-0.2,1.9-0.6,3.8-0.9,5.6c-0.4,2.1-0.9,4.1-0.8,5.7c0.2,3.6,1.5,5.5,4.1,5.5c2.8,0,4.3-1.9,4.3-5.7c0-3.1-0.9-5.6-1.5-7.2l-0.2-0.6c-0.6-1.8-0.7-3.4-0.8-5.7c-0.1-2.3,0-4.8,0.6-7.3c0.6-2.5,1.8-3.7,3.9-5.7l0.5-0.5l1.5,1.8l-0.5,0.5c-1.9,1.9-2.8,2.7-3.2,4.5c-0.5,2.2-0.5,4.5-0.5,6.6c0.1,2.3,0.1,3.6,0.6,5l0.2,0.6c0.6,1.7,1.7,4.5,1.7,8.1C-407.5,562.7-409.9,565.8-414,565.8L-414,565.8z M-411.1,544.4l-0.1-2.4c0,0,1.7,0,2.7-0.1c0-0.4,0-1.1,0-1.8v-0.4c0-2.9-0.4-3.3-0.9-3.7c-0.2-0.2-0.4-0.3-0.5-0.5l1.6-1.6c0.1,0.1,0.2,0.2,0.3,0.3c0.9,0.9,1.7,1.8,1.7,5.6v0.4c0,1.3,0,2.1-0.1,2.7c-0.2,1-0.8,1.5-1.7,1.5C-408.7,544.4-411.1,544.4-411.1,544.4L-411.1,544.4z"/><path id="Shape_1_" fill="#1B1B1C" d="M-433.7,451.5l0.2,66h24.3l3.6,17l18.5-17l58.4-0.2v-67.8h-105.1V451.5z"/></g><text transform="matrix(1 0 0 1 -422 500)" fill="#FFFFFF" font-family="ArialMT" font-size="9">12gal @ Chevron</text><image overflow="visible" enable-background="new    " width="2000" height="2235" id="Chevron-logo" xlink:href="1082CB53D4AC3DD1.png"  sketch:type="MSBitmapLayer" transform="matrix(1.300000e-02 0 0 1.297539e-02 -421 455)"></image><text transform="matrix(1 0 0 1 -385 478)" fill="#FFFFFF" font-family="ArialMT" font-size="24">$50</text></g></g></g></svg>';
-angular.module('benzpay', ['ngRoute'])
+
+
+
+
+var markersSet = false;
+
+angular.module('benzpay', ['ngRoute', 'ngSanitize'])
 	.controller('MainController', function($rootScope, $scope, $route, $location, $routeParams){
 		$scope.activeTab;
-		$rootScope.mode = 'gas';
+		$rootScope.mode = 'events';
 		$rootScope.payment = null;
 		$scope.active = true;
+		$rootScope.points = [];
+		$rootScope.payMode = "select";
+		$rootScope.activePoint = 0;
 		$rootScope.bal = {
-			usd: 47.19,
-			btc: 20.00
+			usd: 553.19,
+			btc: 2200.00
 		}
 		$scope.time = moment().format("h:mm A");
 		$scope.$route = $route;
 		console.log('main controller');
-		$scope.bitcoinAddress = "1LvFcvjYioPtgzkrtw78Wzaik2eC3kiwDX"
+		$scope.bitcoinAddress = "2NBGU9QQ3xwV1nXJtgsRqJoztrgkEdqENjD for the car"
 		$scope.bitcoinQR_URL = "http://chart.apis.google.com/chart?chf=a,s,000000|bg,s,FFFFFF&chs=150x150&chld=M|4&cht=qr&chl=1LvFcvjYioPtgzkrtw78Wzaik2eC3kiwDX&choe=UTF-8"
 		$scope.bitcoinBalance = 0.20;
 
@@ -30608,6 +31301,13 @@ angular.module('benzpay', ['ngRoute'])
 
 				if(command.command==="cw"){
 					console.log("CW");
+					$rootScope.activePoint = ($rootScope.activePoint === $rootScope.points.length - 1) ? 0 : $rootScope.activePoint + 1;
+					return;
+				}
+
+				if(command.command === "ccw"){
+					$rootScope.activePoint = ($rootScope.activePoint === 0) ? $rootScope.points.length - 1 : $rootScope.activePoint - 1;
+					return;
 				}
 
 				if(command.command==="swiperight"){
@@ -30622,11 +31322,24 @@ angular.module('benzpay', ['ngRoute'])
 							$rootScope.mode = "gas";
 							break;
 					}
+					markersSet = false;
 					return;
 				}
 
 				if(command.command==="swipeleft"){
-
+					switch($rootScope.mode){
+						case "gas":
+							$rootScope.mode = "parking";
+							break;
+						case "parking":
+							$rootScope.mode = "events";
+							break;
+						case "events":
+							$rootScope.mode = "gas";
+							break;
+					}
+					markersSet = false;
+					return;
 				}
 
 				if(command.command==="right"){
@@ -30645,7 +31358,7 @@ angular.module('benzpay', ['ngRoute'])
 							$scope.$apply();
 							break;
 						case "/peers":
-							$location.url("/settings");
+							$location.url("/home");
 							$scope.$apply();
 							break;
 						case "/settings":
@@ -30657,7 +31370,7 @@ angular.module('benzpay', ['ngRoute'])
 							$scope.$apply();
 							break;
 						case "/parking":
-							$location.url("/home");
+							$location.url("/peers");
 							$scope.$apply();
 							break;
 						case "/drive":
@@ -30671,7 +31384,7 @@ angular.module('benzpay', ['ngRoute'])
 					switch($location.url()){
 
 						case "/home":
-							$location.url("/parking");
+							$location.url("/peers");
 							$scope.$apply();
 							break;
 						case "/drive":
@@ -30691,7 +31404,7 @@ angular.module('benzpay', ['ngRoute'])
 							$scope.$apply();
 							break;
 						case "/peers":
-							$location.url("/warnings");
+							$location.url("/parking");
 							$scope.$apply();
 							break;
 						case "/warnings":
@@ -30708,6 +31421,16 @@ angular.module('benzpay', ['ngRoute'])
 
 				if(command.command==="click"){
 					$rootScope.payment = null;
+					if($location.url("/pay")){
+						if($rootScope.payMode === "select"){
+							$rootScope.payment = $rootScope.points[$rootScope.activePoint];
+							$rootScope.payMode = "confirm";
+						}
+						else{
+							$rootScope.payment = null;
+							$rootScope.payMode = "select";
+						}
+					}
 				}
 
 				if(command.command==="menu"){
@@ -30745,6 +31468,7 @@ angular.module('benzpay', ['ngRoute'])
 	})
 
 	.controller('PeersController', function($scope, $routeParams) {
+		$scope.$parent.activeTab = 'peers';
 	})
 
 	.controller('SettingsController', function($scope, $routeParams) {
@@ -30753,12 +31477,11 @@ angular.module('benzpay', ['ngRoute'])
 	.controller('PayController', function($rootScope, $scope, $routeParams) {
 		var setPoints = function(points){
 			console.log('set points');
-			$scope.points = points;
+			$rootScope.points = points;
 		};
 		var pointActive = {
 
 		};
-		var markersSet = false;
 
 		$scope.modeTitles = {
 			'parking': 'Parking Suggestions',
@@ -30798,13 +31521,15 @@ angular.module('benzpay', ['ngRoute'])
 					new nokia.maps.map.component.Overview(),
 				],
 				// Zoom level for the map
-				zoomLevel: 17,
-				//zoomLevel:14,
+				//zoomLevel: 16, //gas
+				zoomLevel:11, //events
+				//zoomLevel:15, //parking
 				// Map center coordinates
 				center: [37.8085741667, -122.415423667],
 				baseMapType: nokia.maps.map.Display.SMARTMAP
 			}
 		);
+		map.setCenter("default");
 		map.addListener("displayready", function() {
 
 
@@ -30817,7 +31542,7 @@ angular.module('benzpay', ['ngRoute'])
 					anchor: new nokia.maps.util.Point(32, 32)
 				}
 			);
-			map.objects.add(car);
+			//map.objects.add(car);
 
 
 			console.log(car, nokia);
@@ -30868,8 +31593,22 @@ angular.module('benzpay', ['ngRoute'])
 				var vehicleData = JSON.parse(message.data);
 				//console.log(vehicleData, vehicleData.GPS_Latitude, vehicleData.GPS_Longitude);
 
-				if (!markersSet) {
+				if (!markersSet && vehicleData.points[0].mode == $rootScope.mode) {
+					map.objects.clear();
+
+					car = new nokia.maps.map.Marker(
+						new nokia.maps.geo.Coordinate(37.8085741667, -122.415423667), {
+							title: 'car',
+							visibility: true,
+							icon: "assets/Roundmarkerorange.svg",
+							anchor: new nokia.maps.util.Point(32, 32)
+						}
+					);
+					//map.objects.add(car);
+
+
 					for (var i = 0; i < vehicleData.points.length; i++) {
+						if(vehicleData.points[i].mode != $rootScope.mode) continue;
 
 						var marker = new nokia.maps.map.Marker(
 							new nokia.maps.geo.Coordinate(vehicleData.points[i].latitude, vehicleData.points[i].longitude), {
@@ -30882,18 +31621,18 @@ angular.module('benzpay', ['ngRoute'])
 						);
 						map.objects.add(marker);
 					}
+					markersSet = true;
 				}
-				markersSet = true;
 
 				for (var i = 0; i < vehicleData.points.length; i++) {
 
 					if (vehicleData.points[i].distance == 0.00 && !pointActive[vehicleData.points[i].name]) {
-						$rootScope.payment = vehicleData.points[i];
+						/*$rootScope.payment = vehicleData.points[i];
 						pointActive[vehicleData.points[i].name] = true;
 						$rootScope.bal = {
 							usd: 13.38,
 							btc: 9.53
-						}
+						}*/
 					}
 					//console.log('distance', vehicleData.points[i].distance);
 
@@ -30911,11 +31650,17 @@ angular.module('benzpay', ['ngRoute'])
 				map.objects.add(car);*/
 				//var carPosition = new nokia.maps.util.Point(vehicleData.GPS_Latitude, vehicleData.GPS_Longitude);
 				//car.setPosition(carPosition);
+
+				console.log(vehicleData.GPS_Latitude, vehicleData.GPS_Latitude - 0.001);
+				if($rootScope.mode === "parking"){
+					//vehicleData.GPS_Latitude = vehicleData.GPS_Latitude - 0.001;
+				}
+
 				car.set("coordinate", new nokia.maps.geo.Coordinate(vehicleData.GPS_Latitude, vehicleData.GPS_Longitude));
 
-				$scope.points = vehicleData.points;
+				$rootScope.points = vehicleData.points;
 				$scope.$apply();
-				map.setCenter([vehicleData.GPS_Latitude, vehicleData.GPS_Longitude]);
+				map.setCenter([vehicleData.GPS_Latitude, vehicleData.GPS_Longitude], "default");
 			};
 		});
 	})
@@ -30925,7 +31670,7 @@ angular.module('benzpay', ['ngRoute'])
 			{
 				name: "2 hr Parking SF",
 				amount: "$3.50",
-				account: "1CsyGSz42Adi3..."
+				account: "2N4ZvHk3UD53ffw..."
 			},
 			{
 				name: "Starbucks Tall Coffee",
@@ -30940,7 +31685,7 @@ angular.module('benzpay', ['ngRoute'])
 			{
 				name: "Palo Alto Shell",
 				amount: "$25.71",
-				account: "1CsyGSz42Adi3..."
+				account: "2NC3SWWVjxwUC..."
 			},
 			{
 				name: "Redwood Chevron",
@@ -30950,7 +31695,7 @@ angular.module('benzpay', ['ngRoute'])
 			{
 				name: "Starbucks Tall Coffee",
 				amount: "$5.95",
-				account: "1CsyGSz42Adi3..."
+				account: "2N3N7c7ZWgZYV..."
 			},
 			{
 				name: "Bridge Toll Pass",
